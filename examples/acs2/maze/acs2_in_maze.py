@@ -20,6 +20,7 @@ if __name__ == '__main__':
     parser.add_argument("-e", "--environment", default="MazeF4-v0")
     parser.add_argument("--epsilon", default=1.0, type=float)
     parser.add_argument("--ga", action="store_true")
+    parser.add_argument("--pee", action="store_true")
     parser.add_argument("--explore-trials", default=50, type=int)
     parser.add_argument("--exploit-trials", default=10, type=int)
     args = parser.parse_args()
@@ -31,6 +32,7 @@ if __name__ == '__main__':
     cfg = Configuration(8, 8,
                         epsilon=args.epsilon,
                         do_ga=args.ga,
+                        do_pee=args.pee,
                         performance_fcn=calculate_performance)
     logger.info(cfg)
 

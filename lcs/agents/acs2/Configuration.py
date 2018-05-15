@@ -8,6 +8,7 @@ class Configuration:
                  environment_metrics_fcn=None,
                  performance_fcn=None,
                  performance_fcn_params={},
+                 do_pee=False,
                  do_ga=False,
                  do_subsumption=True,
                  beta=0.05,
@@ -34,6 +35,7 @@ class Configuration:
         :param performance_fcn: function for estimating agent performance
         :param performance_fcn_params: optional parameters needed for
             calculating agent performance
+        :param do_pee: whether to use Probability-Enhanced Effects
         :param do_ga: switch *Genetic Generalization* module
         :param do_subsumption:
         :param beta:
@@ -58,6 +60,7 @@ class Configuration:
         self.environment_metrics_fcn = environment_metrics_fcn
         self.performance_fcn = performance_fcn
         self.performance_fcn_params = performance_fcn_params
+        self.do_pee = do_pee
         self.do_ga = do_ga
         self.do_subsumption = do_subsumption
         self.theta_exp = theta_exp
@@ -81,6 +84,7 @@ class Configuration:
                "\n\t- Action mapping function: [{}]" \
                "\n\t- Environment metrics function: [{}]" \
                "\n\t- Performance calculation function: [{}] " \
+               "\n\t- Do PEE: [{}]" \
                "\n\t- Do GA: [{}]" \
                "\n\t- Do subsumption: [{}]" \
                "\n\t- Beta: [{}]" \
@@ -94,6 +98,7 @@ class Configuration:
                     self.action_mapping_fcn,
                     self.environment_metrics_fcn,
                     self.performance_fcn,
+                    self.do_pee,
                     self.do_ga,
                     self.do_subsumption,
                     self.beta,
