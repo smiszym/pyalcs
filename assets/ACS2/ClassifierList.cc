@@ -637,20 +637,24 @@ void ClassifierList::applyALP(Perception *p0, Action *act, Perception *p1,
  * Actual enhancements are added to newList.
  */
 void ClassifierList::applyEnhancedEffectPartCheck(ClassifierList **newList, Perception *p0, int time) {
+    // Create a list of candidates. Every enhanceable classifier is a candidate.
     ClassifierList *candList = new ClassifierList();
     PureClassifierList *listp = 0;
     for (listp = list; listp != 0; listp = listp->next) {
         if (listp->cl->isEnhanceable())
             candList->addClassifier(listp->cl);
     }
+
     if (candList->size < 2) {
         delete candList;
-        return;
+        return; // Not worth an effort
     }
 
+    // for listp in candList
     for (listp = candList->list; listp != 0; listp = listp->next) {
         ClassifierList *candList2 = new ClassifierList();
-        int candNum = 0;
+        int candNum = 0; // size of candList2
+        // for listp2 in candList
         for (PureClassifierList *listp2 = candList->list; listp2 != 0; listp2 = listp2->next) {
             if (listp != listp2 && !listp->cl->getPMark()->isEnhanced() &&
                 listp->cl->getPMark()->isEqual(listp2->cl->getPMark(), p0)) {
