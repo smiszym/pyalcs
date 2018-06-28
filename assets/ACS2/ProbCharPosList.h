@@ -19,6 +19,8 @@
 
 #include"ProbCharList.h"
 
+// Node in ProbCharPosList.
+// (position, ProbCharList) tuple, along with a pointer to the next node.
 class ProbCharPosItem {
     friend class ProbCharPosList;
 
@@ -45,7 +47,8 @@ private:
     ProbCharPosItem *next;
 };
 
-
+// Full Enhanced Effect representation.
+// List of (position, ProbCharList) tuples, with a stored iterator.
 class ProbCharPosList {
     friend class Effect;
 

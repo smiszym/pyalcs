@@ -32,6 +32,7 @@ Effect::Effect(Effect *ef1, Effect *ef2, double q1, double q2, Perception *perce
     //copy the one list first and then work on the new one and the second effect
     list = new ProbCharPosList(ef1->list);
 
+    // Reset iterator to the beginning
     list->reset();
     ef2->list->reset();
 

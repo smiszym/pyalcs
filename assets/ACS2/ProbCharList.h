@@ -20,6 +20,8 @@ using namespace std;
 #include<iostream>
 #include<fstream>
 
+// Single element of Enhanced Effect.
+// List of (character, probability) tuples.
 class ProbCharList {
 public:
     ProbCharList(char c) {
