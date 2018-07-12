@@ -1,6 +1,8 @@
 import logging
 from typing import Optional
 
+from lcs import Perception
+
 from . import ClassifiersList, Configuration
 from ...agents import Agent
 from ...agents.Agent import Metric
@@ -100,7 +102,7 @@ class ACS2(Agent):
         # Initial conditions
         steps = 0
         raw_state = env.reset()
-        state = parse_state(raw_state, self.cfg.perception_mapper_fcn)
+        state = Perception(parse_state(raw_state, self.cfg.perception_mapper_fcn))
         action = None
         reward = None
         prev_state = None
@@ -153,7 +155,7 @@ class ACS2(Agent):
 
             prev_state = state
             raw_state, reward, done, _ = env.step(internal_action)
-            state = parse_state(raw_state, self.cfg.perception_mapper_fcn)
+            state = Perception(parse_state(raw_state, self.cfg.perception_mapper_fcn))
 
             if done:
                 ClassifiersList.apply_alp(
