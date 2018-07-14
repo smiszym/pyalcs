@@ -82,6 +82,9 @@ class ACS2(Agent):
 
         metrics = []
         while current_trial < max_trials:
+            logger.info("** Running trial {}/{} using strategy `{}` **"
+                        .format(current_trial, max_trials, func))
+
             steps_in_trial, reward = func(env, steps, current_trial)
             steps += steps_in_trial
 
@@ -97,7 +100,6 @@ class ACS2(Agent):
         return self.population, metrics
 
     def _run_trial_explore(self, env, time, current_trial=None):
-        logger.debug("** Running trial explore ** ")
         # Initial conditions
         steps = 0
         raw_state = env.reset()
@@ -150,7 +152,10 @@ class ACS2(Agent):
                 self.cfg.number_of_possible_actions,
                 self.cfg.epsilon)
             internal_action = self.cfg.environment_adapter.to_env_action(action)
-            logger.debug("\tExecuting action: [%d]", action)
+            logger.info("Step {} of exploring the environment:".format(steps))
+            logger.info(" * current state: {}".format(state))
+            logger.info(" * current environment:\n{}".format(env.render('ansi')))
+            logger.info(" * decision: executing action {}".format(action))
             action_set = match_set.form_action_set(action)
 
             prev_state = state
@@ -194,7 +199,6 @@ class ACS2(Agent):
         return steps, total_reward
 
     def _run_trial_exploit(self, env, time=None, current_trial=None):
-        logger.debug("** Running trial exploit **")
         # Initial conditions
         steps = 0
         raw_state = env.reset()
@@ -206,6 +210,8 @@ class ACS2(Agent):
         done = False
 
         while not done:
+            logger.info("Step {} of exploiting the environment:".format(steps))
+
             match_set = self.population.form_match_set(state)
 
             if steps > 0:
@@ -222,6 +228,8 @@ class ACS2(Agent):
                 self.cfg.number_of_possible_actions,
                 epsilon=0.0)
             internal_action = self.cfg.environment_adapter.to_env_action(action)
+            logger.info(" * current environment:\n{}".format(env.render('ansi')))
+            logger.info(" * decision: executing action {}".format(action))
             action_set = match_set.form_action_set(action)
 
             raw_state, reward, done, _ = env.step(internal_action)
