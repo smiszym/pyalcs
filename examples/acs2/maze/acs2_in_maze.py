@@ -16,7 +16,7 @@ logger = logging.getLogger("integration")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-e", "--environment", default="BMaze4-v0")
+    parser.add_argument("-e", "--environment", default="MazeF4-v0")
     parser.add_argument("--epsilon", default=1.0, type=float)
     parser.add_argument("--ga", action="store_true")
     parser.add_argument("--explore-trials", default=50, type=int)
