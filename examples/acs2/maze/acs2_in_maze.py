@@ -9,7 +9,7 @@ from examples.acs2.maze.utils import calculate_performance
 from lcs.agents.acs2 import ACS2, Configuration
 
 # Configure logger
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 logger = logging.getLogger("integration")
 
