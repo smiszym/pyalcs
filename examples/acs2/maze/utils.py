@@ -8,9 +8,6 @@ def calculate_performance(maze, population):
     """
     transitions = maze.env.get_all_possible_transitions()
 
-    # Take into consideration only reliable classifiers
-    reliable_classifiers = [c for c in population if c.is_reliable()]
-
     # Count how many transitions are anticipated correctly
     nr_correct = 0
 
@@ -20,7 +17,7 @@ def calculate_performance(maze, population):
         p0 = maze.env.maze.perception(*start)
         p1 = maze.env.maze.perception(*end)
 
-        if any([True for cl in reliable_classifiers
+        if any([True for cl in population
                 if cl.predicts_successfully(p0, action, p1)]):
             nr_correct += 1
 
