@@ -1,8 +1,12 @@
+import logging
 import random
 from typing import Optional, Union, Callable, List
 
 from lcs import Perception
 from . import Configuration, Condition, Effect, PMark
+
+
+logger = logging.getLogger(__name__)
 
 
 class Classifier(object):
