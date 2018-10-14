@@ -239,6 +239,8 @@ class ACS2(Agent):
             'numerosity': sum(cl.num for cl in self.population),
             'reliable': len([cl for cl in
                              self.population if cl.is_reliable()]),
+            'quality': (sum(cl.q for cl in self.population) /
+                        len(self.population)),
             'fitness': (sum(cl.fitness for cl in self.population) /
                         len(self.population)),
             'trial': trial,
