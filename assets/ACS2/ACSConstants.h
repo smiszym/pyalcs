@@ -31,7 +31,7 @@
 
 #define U_MAX 100000
 
-#define DO_PEES 0
+#define DO_PEES 1
 
 #define DO_MENTAL_ACTING_STEPS 0
 #define DO_LOOKAHEAD_WINNER 0
