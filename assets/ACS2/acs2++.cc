@@ -43,9 +43,6 @@ int startOneTrialExplore(ClassifierList *population, Environment *env, int time,
 
 int startOneTrialExploit(ClassifierList *population, Environment *env);
 
-int startActionPlanning(ClassifierList *population, Environment *env, int time, ofstream *out, Perception *situation,
-                        Perception *previousSituation, ClassifierList **actionSet, Action *act, double *rho0);
-
 void startCRRatExperiment(Environment *env, ofstream *out);
 
 void printTestSortedClassifierList(ClassifierList *list, Environment *env, ofstream *out);
@@ -92,8 +89,7 @@ void startExperiments(Environment *env) {
          << " r_ini: " << R_INI << " q_ini:" << Q_INI << " avt_ini: " << AVT_INI << " q_alp_min: " << Q_ALP_MIN
          << " q_ga_decrease: " << Q_GA_DECREASE << endl;
     *out << "# umax: " << U_MAX << " doPees: " << DO_PEES << " epsilon: " << EPSILON << " prob_exploration_bias: "
-         << PROB_EXPLORATION_BIAS << " exploration bias method: " << EXPLORATION_BIAS_METHOD << " do_action_planning: "
-         << DO_ACTION_PLANNING << " action_planning_frequency: " << ACTION_PLANNING_FREQUENCY << endl;
+         << PROB_EXPLORATION_BIAS << " exploration bias method: " << EXPLORATION_BIAS_METHOD << endl;
     *out << "# do_ga: " << DO_GA << " theta_ga: " << THETA_GA << " mu: " << MU << " X.type: " << X_TYPE << " chi: "
          << CHI << " theta_as: " << THETA_AS << " theta_exp: " << THETA_EXP << " do_subsumption: " << DO_SUBSUMPTION
          << endl;
@@ -183,15 +179,6 @@ int startOneTrialExplore(ClassifierList *population, Environment *env, int time,
         if (DO_MENTAL_ACTING_STEPS > 0)
             population->doOneStepMentalActing(DO_MENTAL_ACTING_STEPS);
 
-        if (DO_ACTION_PLANNING && (time + steps) % ACTION_PLANNING_FREQUENCY == 0) {
-            // Action planning for increased model learning.
-            char *id = env->getID();
-            if (strcmp(id, "HandEye") == 0)
-                steps += startActionPlanning(population, env, time + steps, out, situation, previousSituation,
-                                             &actionSet, act, &rho0);
-            delete[] id;
-        }
-
         matchSet = new ClassifierList(population, situation);
 
         if (steps > 0) {
@@ -274,83 +261,6 @@ int startOneTrialExploit(ClassifierList *population, Environment *env) {
 
     return steps;
 }
-
-
-/**
- * Executes action planning for model learning speed up. 
- * Method requests goals from a 'goal generator' provided by the environment. 
- * If goal is provided, ACS2 searches for a goal sequence in the current model (only the reliable classifiers). 
- * This is done as long as goals are provided and ACS2 finds a sequence and successfully reaches the goal.
- * Performance monitoring also works in this method.
- */
-int startActionPlanning(ClassifierList *population, Environment *env, int time, ofstream *out, Perception *situation,
-                        Perception *previousSituation, ClassifierList **actionSet, Action *act, double *rho0) {
-    /* Recheck this function -> is step set correct and we need to do model testing in here! */
-    Perception *goalSituation = new Perception();
-
-    int steps;
-    ClassifierList *matchSet = 0;
-
-    for (steps = 0;
-         !env->isReset() && (REWARD_TEST || time + steps <= MAX_STEPS) && (!REWARD_TEST || steps < MAX_TRIAL_STEPS);) {
-
-        if (!env->getGoalState(goalSituation)) {
-            break;
-        } else {
-            Action **actSequence = population->searchGoalSequence(situation, goalSituation);
-            int i;
-            //cout<<situation<<"->";
-            //for(act=actSequence[0], i=0; act!=0; ++i, act=actSequence[i])
-            // cout<<act<<"->";
-            //cout<<goalSituation<<endl;
-
-            //Execute the found sequence and learn during executing
-            for (i = 0; actSequence[i] != 0; i++, steps++) {
-
-                matchSet = new ClassifierList(population, situation);
-
-                if ((*actionSet) != 0) {
-                    (*actionSet)->applyALP(previousSituation, act, situation, time + steps, population, matchSet);
-                    (*actionSet)->applyReinforcementLearning(*rho0, matchSet->getMaximumQR());
-                    if (DO_GA)
-                        (*actionSet)->applyGA(time + steps, population, matchSet, situation);
-                    delete (*actionSet);
-                }
-                act->setAction(actSequence[i]);
-                (*actionSet) = new ClassifierList(matchSet, act);
-                delete matchSet;
-
-                (*rho0) = env->executeAction(act);
-                previousSituation->setPerception(situation);
-                env->getSituation(situation);
-
-                if (!REWARD_TEST && (time + steps + 1) % MODEL_TEST_ITERATION == 0) {
-                    if (MODEL_TEST_TYPE == 0)
-                        testModel(population, out, env, time + steps + 1);
-                    else
-                        testList(population, out, env, time + steps + 1);
-                }
-
-                if (!((*actionSet)->existClassifier(previousSituation, act, situation, THETA_R)))
-                    break;//no reliable classifier was able to anticipate such a change
-            }
-            int doBreak = 0;
-            if (i == 0 || act != 0)
-                doBreak = 1;
-            for (i = 0; actSequence[i] != 0; i++)
-                delete (actSequence[i]);
-
-            delete[] actSequence;
-            if (doBreak)
-                break;
-        }
-    }
-    delete goalSituation;
-
-    return steps;
-
-}
-
 
 /**
  * This function is programmed to execute the colwill/rescorla rat experiments.

@@ -41,9 +41,6 @@
 #define PROB_EXPLORATION_BIAS 0.5 /* specifies the probability of applying an exploration biased action-selection */
 #define EXPLORATION_BIAS_METHOD 2 /* 0 = action delay bias, 1 = knowledge array bias, 2 = 50/50 */
 
-#define DO_ACTION_PLANNING 0
-#define ACTION_PLANNING_FREQUENCY 50
-
 /* GA constants */
 #define DO_GA 0
 #define THETA_GA 100
