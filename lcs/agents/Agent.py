@@ -10,7 +10,7 @@ class Agent:
     def exploit(self, env, trials):
         raise NotImplementedError()
 
-    def _collect_agent_metrics(self, trial, steps, total_steps) -> Metric:
+    def _collect_agent_metrics(self, trial, steps, total_steps, reward) -> Metric:
         raise NotImplementedError()
 
     def _collect_environment_metrics(self, env) -> Optional[Metric]:
@@ -23,7 +23,8 @@ class Agent:
                          env,
                          current_trial: int,
                          steps_in_trial: int,
-                         steps: int) -> Dict[str, Optional[Metric]]:
+                         steps: int,
+                         reward: int) -> Dict[str, Optional[Metric]]:
         """
 
         Parameters
@@ -42,7 +43,7 @@ class Agent:
         Dict[str, Metric]
         """
         agent_stats = self._collect_agent_metrics(
-            current_trial, steps_in_trial, steps)
+            current_trial, steps_in_trial, steps, reward)
         env_stats = self._collect_environment_metrics(env)
         performance_stats = self._collect_performance_metrics(env)
 

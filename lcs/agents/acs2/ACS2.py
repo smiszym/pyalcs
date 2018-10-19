@@ -83,11 +83,11 @@ class ACS2(Agent):
 
         metrics = []
         while current_trial < max_trials:
-            steps_in_trial = func(env, steps, current_trial)
+            steps_in_trial, reward = func(env, steps, current_trial)
             steps += steps_in_trial
 
             trial_metrics = self._collect_metrics(
-                env, current_trial, steps_in_trial, steps)
+                env, current_trial, steps_in_trial, steps, reward)
             metrics.append(trial_metrics)
 
             if current_trial % 25 == 0:
@@ -105,6 +105,7 @@ class ACS2(Agent):
         state = Perception(parse_state(raw_state, self.cfg.perception_mapper_fcn))
         action = None
         reward = None
+        total_reward = 0
         prev_state = None
         action_set = ClassifiersList()
         done = False
@@ -188,9 +189,10 @@ class ACS2(Agent):
                     self.cfg.do_subsumption,
                     self.cfg.theta_exp)
 
+            total_reward += reward
             steps += 1
 
-        return steps
+        return steps, total_reward
 
     def _run_trial_exploit(self, env, time=None, current_trial=None):
         logger.debug("** Running trial exploit **")
@@ -200,6 +202,7 @@ class ACS2(Agent):
         state = parse_state(raw_state, self.cfg.perception_mapper_fcn)
 
         reward = None
+        total_reward = 0
         action_set = ClassifiersList()
         done = False
 
@@ -229,11 +232,12 @@ class ACS2(Agent):
                 ClassifiersList.apply_reinforcement_learning(
                     action_set, reward, 0, self.cfg.beta, self.cfg.gamma)
 
+            total_reward += reward
             steps += 1
 
-        return steps
+        return steps, total_reward
 
-    def _collect_agent_metrics(self, trial, steps, total_steps) -> Metric:
+    def _collect_agent_metrics(self, trial, steps, total_steps, reward) -> Metric:
         return {
             'population': len(self.population),
             'numerosity': sum(cl.num for cl in self.population),
@@ -245,7 +249,8 @@ class ACS2(Agent):
                         len(self.population)),
             'trial': trial,
             'steps': steps,
-            'total_steps': total_steps
+            'total_steps': total_steps,
+            'reward': reward
         }
 
     def _collect_environment_metrics(self, env) -> Optional[Metric]:
