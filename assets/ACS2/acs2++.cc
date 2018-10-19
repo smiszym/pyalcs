@@ -138,8 +138,8 @@ void startOneExperiment(Environment *env, ofstream *out) {
         }
         trial++;
     }
-    //printTestSortedClassifierList(population, env, out);
-    //*out<<population<<endl;
+    printTestSortedClassifierList(population, env, out);
+    *out<<population<<endl;
 
     population->deleteClassifiers();
     delete population;
