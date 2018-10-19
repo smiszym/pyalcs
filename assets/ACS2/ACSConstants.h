@@ -45,7 +45,7 @@
 #define ACTION_PLANNING_FREQUENCY 50
 
 /* GA constants */
-#define DO_GA 1
+#define DO_GA 0
 #define THETA_GA 100
 #define MU 0.30
 #define X_TYPE 2 /* 0 = uniform, 1 = one-point, and 2 = two-point crossover */
@@ -56,8 +56,8 @@
 #define DO_SUBSUMPTION 1
 
 /*andere Makros:*/
-#define ENVIRONMENT_CLASS MPEnvironment
-#define RESULT_FILE "ACS2_Maze4_5050B050.txt"
+#define ENVIRONMENT_CLASS MazeEnvironment
+#define RESULT_FILE "maze-results.txt"
 
 #define MAX_STEPS 30000
 #define MAX_TRIAL_STEPS 50
