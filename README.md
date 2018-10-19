@@ -23,3 +23,22 @@ If you want to use the library in your project please cite the following:
 Prior to PR please execute to check if standards are holding:
 
     make test
+
+
+### PRIVATE NOTES
+
+    cout << time << " " << nrCorrect << "-" << nrWrong << "=" << (nrCorrect * 100 / (nrCorrect + nrWrong)) << " "
+         << pop->getSize() << " " << pop->getNumSize() << " " << relList->getSize() << " " << pop->getSpecificity()
+         << endl;
+
+in testModel() (acs2++.cc). Interpretation of the output:
+
+    2600 40-60=40 2280 2331 41 0.678411
+     |   |   |  |  |    |   |   \-- specificity
+     |   |   |  |  |    |   \-- size of relList
+     |   |   |  |  |    \-- population size, including numerosity
+     |   |   |  |  \-- population size, excluding numerosity
+     |   |   |  \-- percentage of correct (knowledge)
+     |   |   \-- number of wrong
+     |   \-- number of correct
+     \-- time
