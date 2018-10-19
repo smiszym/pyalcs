@@ -52,8 +52,6 @@ void printTestSortedClassifierList(ClassifierList *list, Environment *env, ofstr
 
 void testModel(ClassifierList *pop, ofstream *out, Environment *env, int time);
 
-void testList(ClassifierList *pop, ofstream *out, Environment *env, int time);
-
 void writeRewardPerformance(ClassifierList *pop, int *steps, int time, int trial, ofstream *out);
 
 void randomize(void);
@@ -179,10 +177,7 @@ int startOneTrialExplore(ClassifierList *population, Environment *env, int time,
     for (steps = 0; !env->isReset() && (time + steps <= MAX_STEPS) && (steps < MAX_TRIAL_STEPS); steps++) {
 
         if (!REWARD_TEST && (time + steps) % MODEL_TEST_ITERATION == 0) {
-            if (MODEL_TEST_TYPE == 0)
-                testModel(population, out, env, time + steps);
-            else
-                testList(population, out, env, time + steps);
+            testModel(population, out, env, time + steps);
         }
 
         if (DO_MENTAL_ACTING_STEPS > 0)
@@ -537,77 +532,6 @@ void testModel(ClassifierList *pop, ofstream *out, Environment *env, int time) {
     delete a;
     delete s2;
 }
-
-/**
- * Is basically the same as testModel, however, not the reliable classifiers are tested, but 
- * always the classifier with the strongest quality is selected for the test.
- */
-void testList(ClassifierList *pop, ofstream *out, Environment *env, int time) {
-    double nrCorrect = 0, nrWrong = 0;
-    env->doTesting();
-    Perception *s1 = new Perception();
-    Action *a = new Action();
-    Perception *s2 = new Perception();
-
-    while (env->getNextTest(s1, a, s2)) {
-        ClassifierList *mset = new ClassifierList(pop, s1);
-        ClassifierList *aset = new ClassifierList(mset, a);
-        Classifier *testCl = aset->getHighestQualityClassifier();
-        if (testCl != 0 && testCl->doesAnticipateCorrect(s1, s2)) {
-            nrCorrect++;
-        } else {
-            nrWrong++;
-        }
-        delete mset;
-        delete aset;
-    }
-
-    if (knowledge < nrCorrect * 100 / (nrCorrect + nrWrong)) {
-        while (knowledge < nrCorrect * 100 / (nrCorrect + nrWrong))
-            knowledge += 2;
-        cout << (nrCorrect * 100 / (nrCorrect + nrWrong)) << "% knowledge at time " << time << " with pop. size "
-             << pop->getSize() << endl;
-    }
-
-    // rel list is created to determine the size of the current model.
-    ClassifierList *relList = new ClassifierList(pop, THETA_R);
-
-    cout << time << " " << (nrCorrect * 100 / (nrCorrect + nrWrong)) << " " << pop->getSize() << " "
-         << pop->getNumSize() << " " << relList->getSize() << endl;
-    *out << time << " " << (nrCorrect * 100 / (nrCorrect + nrWrong)) << " " << pop->getSize() << " "
-         << pop->getNumSize() << " " << relList->getSize() << endl;
-
-    env->endTesting();
-    delete relList;
-    delete s1;
-    delete a;
-    delete s2;
-}
-
-/**
- * Writes the RL performance of ACS2 to out. The steps needed to reach the goal during 
- * the last REWARD_TEST_ITERATION exploitation trials are reported in steps. The method averages 
- * the results and writes them to out.
- */
-void writeRewardPerformance(ClassifierList *pop, int *steps, int time, int trial, ofstream *out) {
-    double performance = 0;
-
-    for (int i = 0; i < REWARD_TEST_ITERATION; i++)
-        performance += steps[i];
-
-    performance /= (double) REWARD_TEST_ITERATION;
-
-    // rel list is created to determine the size of the current model.
-    ClassifierList *relList = new ClassifierList(pop, THETA_R);
-
-    cout << trial << " " << performance << " " << pop->getSize() << " " << pop->getNumSize() << " "
-         << relList->getSize() << " " << time << endl;
-    *out << trial << " " << performance << " " << pop->getSize() << " " << pop->getNumSize() << " "
-         << relList->getSize() << " " << time << endl;
-
-    delete relList;
-}
-
 
 /**
  * Used for randomizing the random number generator.

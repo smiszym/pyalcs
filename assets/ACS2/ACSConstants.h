@@ -64,7 +64,6 @@
 #define ANZ_EXPERIMENTS 20
 
 #define REWARD_TEST 0
-#define MODEL_TEST_TYPE 0 /* 0 = test all reliable classifiers, 1 = test highest quality classifier */
 
 #define MODEL_TEST_ITERATION 200 /* Test Iterations in the latent learning tests */
 #define REWARD_TEST_ITERATION 50 /* Trial steps of printing the performance in a trial */
