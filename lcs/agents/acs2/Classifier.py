@@ -143,21 +143,27 @@ class Classifier(object):
     @property
     def specified_unchanging_attributes(self) -> List[int]:
         """
-        Determines the number of specified unchanging attributes in
-        the classifier. An unchanging attribute is one that is anticipated
-        not to change in the effect part.
+        Determines the specified unchanging attributes in the classifier.
+        An unchanging attribute is one that is anticipated not to change
+        in the effect part.
 
         Returns
         -------
         List[int]
-            list specified unchanging attributes indices
+            list of specified unchanging attributes indices
         """
+        # This is Classifier::getUnchangeSpec() in C++
         indices = []
 
         for idx, (cpi, epi) in enumerate(zip(self.condition, self.effect)):
-            if cpi != self.cfg.classifier_wildcard and \
-                    epi == self.cfg.classifier_wildcard:
-                indices.append(idx)
+            if isinstance(epi, ProbabilityEnhancedAttribute):
+                if cpi != self.cfg.classifier_wildcard and \
+                        epi.does_contain(cpi):
+                    indices.append(idx)
+            else:
+                if cpi != self.cfg.classifier_wildcard and \
+                        epi == self.cfg.classifier_wildcard:
+                    indices.append(idx)
 
         return indices
 
