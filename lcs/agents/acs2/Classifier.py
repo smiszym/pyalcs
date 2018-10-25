@@ -63,8 +63,8 @@ class Classifier(object):
         # Application average
         self.tav = tav
 
-        # I don't know yet what it is
-        self.ee = 0
+        # Whether classifier is enhanceable
+        self.ee = False
 
     def __eq__(self, other):
         if self.condition == other.condition and \
@@ -285,7 +285,7 @@ class Classifier(object):
             current situation
         """
         if self.mark.set_mark_using_condition(self.condition, perception):
-            self.ee = 0
+            self.ee = False
 
     def set_alp_timestamp(self, time: int) -> None:
         """
