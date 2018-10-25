@@ -6,7 +6,12 @@ from lcs import TypedList
 
 class PerceptionString(TypedList):
 
-    def __init__(self, observation, wildcard='#', oktypes=(str,)):
+    def __init__(self, observation, wildcard='#', oktypes=(str,dict)):
+        # str is for plain Effect element
+        # dict is for Probability-Enhanced Effect element
+        # TODO: I would really like to specify ProbabilityEnhancedAttribute
+        # as oktype here, but it ain't that easy, because of circular
+        # dependencies.
         super().__init__(oktypes, *observation)
         assert type(wildcard) in self.oktypes
         self.wildcard = wildcard
@@ -15,7 +20,7 @@ class PerceptionString(TypedList):
     def empty(cls,
               length: int,
               wildcard: Any ='#',
-              oktypes: Tuple[Any]=(str,)):
+              oktypes: Tuple[Any]=(str,dict)):
         """
         Creates a perception string composed from wildcard symbols.
         Note that in case that wildcard is an object is get's copied
