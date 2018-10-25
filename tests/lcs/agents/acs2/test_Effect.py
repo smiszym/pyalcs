@@ -115,3 +115,54 @@ class TestEffect:
     def test_eq(self):
         assert Effect('00001111') == Effect('00001111')
         assert Effect('00001111') != Effect('0000111#')
+        assert Effect(({"1": 0.6, "0": 0.4}, {"0": 0.8, "1": 0.2},
+                       {"1": 1.0, "0": 0.0}, {"1": 1.0, "0": 0.0})) \
+            == Effect(({"0": 0.4, "1": 0.6}, {"1": 0.2, "0": 0.8},
+                       {"0": 0.0, "1": 1.0}, {"0": 0.0, "1": 1.0}))
+        assert Effect(({"1": 0.6, "0": 0.4}, {"0": 0.8, "1": 0.2},
+                       {"1": 1.0, "0": 0.0}, {"1": 1.0, "0": 0.0})) \
+            != Effect(({"0": 0.4, "1": 0.6}, {"1": 0.3, "0": 0.7},
+                       {"0": 0.0, "1": 1.0}, {"0": 0.0, "1": 1.0}))
+
+    def test_str(self):
+        # given
+        effect = Effect(({"1": 0.6, "0": 0.4}, {"0": 0.8, "1": 0.2}, "1", "1"))
+
+        # then
+        assert str(effect) == "(PEE)1011"
+
+    def test_reduced_to_non_enhanced(self):
+        # given
+        effect = Effect(({"1": 0.6, "0": 0.4}, {"0": 0.8, "1": 0.2}, "1", "1"))
+
+        # then
+        assert effect.reduced_to_non_enhanced() == Effect("1011")
+
+    def test_not_enhanced(self):
+        # given
+        effect = Effect(("1", "0", "1", "1"))
+
+        # then
+        assert not effect.is_enhanced()
+
+    def test_enhanced(self):
+        # given
+        effect = Effect(({"1": 0.6, "0": 0.4}, {"0": 0.8, "1": 0.2}, "1", "1"))
+
+        # then
+        assert effect.is_enhanced()
+
+    def test_update_equivalence(self):
+        # given (note that the effects are practically equivalent)
+        perception = Perception("1101")
+        effect_a = Effect(
+            ({"1": 0.6, "0": 0.4}, {"0": 0.8, "1": 0.2}, "1", "1"))
+        effect_b = Effect(({"1": 0.6, "0": 0.4}, {"0": 0.8, "1": 0.2},
+                           {"1": 1.0, "0": 0.0}, {"1": 1.0, "0": 0.0}))
+
+        # when
+        effect_a.update_enhanced_effect_probs(perception, 0.6)
+        effect_b.update_enhanced_effect_probs(perception, 0.6)
+
+        # then
+        assert effect_a == effect_b

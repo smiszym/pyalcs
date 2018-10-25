@@ -143,6 +143,9 @@ class ProbabilityEnhancedAttribute(dict):
         else:
             return False
 
+    def copy(self):
+        return ProbabilityEnhancedAttribute(self)
+
     def __eq__(self, other):
         return self.is_similar(other)
 
