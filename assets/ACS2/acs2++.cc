@@ -203,10 +203,6 @@ int startOneTrialExplore(ClassifierList *population, Environment *env, int time,
             //Learning in the last action set.
             actionSet->applyALP(previousSituation, act, situation, time + steps, population, matchSet);
             actionSet->applyReinforcementLearning(rho0, matchSet->getMaximumQR());
-            if (DO_GA) {
-                actionSet->applyGA(time + steps, population, matchSet, situation);
-            }
-
             delete actionSet;
         }
 
@@ -223,9 +219,6 @@ int startOneTrialExplore(ClassifierList *population, Environment *env, int time,
             //Learning in the current action set if end of trial.
             actionSet->applyALP(previousSituation, act, situation, time + steps, population, 0);
             actionSet->applyReinforcementLearning(rho0, 0);
-            if (DO_GA) {
-                actionSet->applyGA(time + steps, population, 0, situation);
-            }
         }
     }
     delete actionSet;
@@ -394,9 +387,6 @@ void startCRRatExperiment(Environment *env, ofstream *out) {
                 //Learning in the last action set.
                 actionSet->applyALP(previousSituation, act, situation, time + steps, population, matchSet);
                 actionSet->applyReinforcementLearning(rho0, matchSet->getMaximumQR());
-                if (DO_GA) {
-                    actionSet->applyGA(time + steps, population, matchSet, situation);
-                }
                 delete actionSet;
             }
 
@@ -417,9 +407,6 @@ void startCRRatExperiment(Environment *env, ofstream *out) {
                 //Learning in the current action set if end of trial.
                 actionSet->applyALP(previousSituation, act, situation, time + steps, population, 0);
                 actionSet->applyReinforcementLearning(rho0, 0);
-                if (DO_GA) {
-                    actionSet->applyGA(time + steps, population, 0, situation);
-                }
             }
         }
         delete actionSet;
@@ -444,9 +431,6 @@ void startCRRatExperiment(Environment *env, ofstream *out) {
                 //Learning in the last action set.
                 actionSet->applyALP(previousSituation, act, situation, time + steps, population, matchSet);
                 actionSet->applyReinforcementLearning(rho0, matchSet->getMaximumQR());
-                if (DO_GA) {
-                    actionSet->applyGA(time + steps, population, matchSet, situation);
-                }
                 delete actionSet;
             }
             matchSet->chooseAction(act, population, situation);
@@ -466,9 +450,6 @@ void startCRRatExperiment(Environment *env, ofstream *out) {
                 //Learning in the current action set if end of trial.
                 actionSet->applyALP(previousSituation, act, situation, time + steps, population, 0);
                 actionSet->applyReinforcementLearning(0, 0);
-                if (DO_GA) {
-                    actionSet->applyGA(time + steps, population, 0, situation);
-                }
             }
         }
         *out << testTrial << " " << rho0 << " " << population->getSize() << endl;

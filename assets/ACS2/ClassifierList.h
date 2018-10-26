@@ -74,13 +74,9 @@ public:
 
     void applyALP(Perception *p0, Action *act, Perception *p1, int time, ClassifierList *pop, ClassifierList *matchSet);
 
-    void applyGA(int time, ClassifierList *pop, ClassifierList *matchSet, Perception *p1);
-
     void applyReinforcementLearning(double rho, double P);
 
     void doOneStepMentalActing(int steps);
-
-    void setGATimeStamps(int time);
 
     void setALPTimeStamps(int time);
 
@@ -93,8 +89,6 @@ public:
     Classifier *getSubsumer(Classifier *cl);
 
     int existClassifier(Perception *s1, Action *act, Perception *s2, double quality);
-
-    void deleteClassifier(Classifier *cl);
 
     void checkList();
 
@@ -135,8 +129,6 @@ private:
         list = 0;
         env = 0;
     }
-
-    void deleteGAClassifiers(ClassifierList *pop, ClassifierList *set, int childNo);
 
     void chooseExploreAction(Action *act);
 
