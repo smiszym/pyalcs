@@ -18,10 +18,10 @@ CC_OPTS  = -g -Wall
 COMPILER = g++
 EXECNAME = $(NAME).$(SYSTEM)
 
-$(NAME):	$(NAME).o Condition.o Perception.o Action.o CharPosList.o ProbCharPosList.o ProbCharList.o Effect.o CharCharPosList.o CharList.o PMark.o Classifier.o ClassifierList.o ACSConstants.h Environment.o MazeEnvironment.o MPEnvironment.o BWEnvironment.o HandEyeEnvironment.o GripperEnvironment.o CRRatEnvironment.o
-		$(COMPILER) $(CC_OPTS) -o $(NAME).out $(LINKMATH) $(NAME).o Condition.o Perception.o Action.o Effect.o CharPosList.o ProbCharPosList.o ProbCharList.o CharCharPosList.o CharList.o PMark.o Classifier.o ClassifierList.o Environment.o MazeEnvironment.o MPEnvironment.o BWEnvironment.o HandEyeEnvironment.o GripperEnvironment.o CRRatEnvironment.o
+$(NAME):	$(NAME).o Condition.o Perception.o Action.o CharPosList.o ProbCharPosList.o ProbCharList.o Effect.o CharCharPosList.o CharList.o PMark.o Classifier.o ClassifierList.o ACSConstants.h Environment.o MazeEnvironment.o MPEnvironment.o BWEnvironment.o HandEyeEnvironment.o GripperEnvironment.o
+		$(COMPILER) $(CC_OPTS) -o $(NAME).out $(LINKMATH) $(NAME).o Condition.o Perception.o Action.o Effect.o CharPosList.o ProbCharPosList.o ProbCharList.o CharCharPosList.o CharList.o PMark.o Classifier.o ClassifierList.o Environment.o MazeEnvironment.o MPEnvironment.o BWEnvironment.o HandEyeEnvironment.o GripperEnvironment.o
 
-$(NAME).o:	$(NAME).cc ACSConstants.h Perception.h Condition.h Action.h Effect.h PMark.h Classifier.h ClassifierList.h Environment.h MazeEnvironment.h MPEnvironment.h BWEnvironment.h HandEyeEnvironment.h GripperEnvironment.h CRRatEnvironment.h
+$(NAME).o:	$(NAME).cc ACSConstants.h Perception.h Condition.h Action.h Effect.h PMark.h Classifier.h ClassifierList.h Environment.h MazeEnvironment.h MPEnvironment.h BWEnvironment.h HandEyeEnvironment.h GripperEnvironment.h
 		$(COMPILER) -c $(CC_OPTS) $(NAME).cc
 
 ClassifierList.o:  ClassifierList.cc ClassifierList.h Classifier.h Action.h ACSConstants.h Environment.h
@@ -77,9 +77,6 @@ HandEyeEnvironment.o:HandEyeEnvironment.h HandEyeEnvironment.cc Environment.h Ac
 
 GripperEnvironment.o:GripperEnvironment.h GripperEnvironment.cc Environment.h Action.h Perception.h
 		$(COMPILER) -c $(CC_OPTS) GripperEnvironment.cc
-
-CRRatEnvironment.o:CRRatEnvironment.h CRRatEnvironment.cc Environment.h Action.h Perception.h
-		$(COMPILER) -c $(CC_OPTS) CRRatEnvironment.cc
 
 clean:	
 	-rm -f *.o *.out

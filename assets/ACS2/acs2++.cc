@@ -43,8 +43,6 @@ int startOneTrialExplore(ClassifierList *population, Environment *env, int time,
 
 int startOneTrialExploit(ClassifierList *population, Environment *env);
 
-void startCRRatExperiment(Environment *env, ofstream *out);
-
 void printTestSortedClassifierList(ClassifierList *list, Environment *env, ofstream *out);
 
 void testModel(ClassifierList *pop, ofstream *out, Environment *env, int time);
@@ -102,11 +100,7 @@ void startExperiments(Environment *env) {
     for (int i = 0; i < ANZ_EXPERIMENTS; i++) {
         *out << "Next Experiment" << endl;
         cout << "Experiment Nr: " << (i + 1) << endl;
-        if (strcmp(id, "CRRat") == 0) {
-            startCRRatExperiment(env, out);
-        } else {
-            startOneExperiment(env, out);
-        }
+        startOneExperiment(env, out);
     }
 
     delete[] id;
@@ -261,118 +255,6 @@ int startOneTrialExploit(ClassifierList *population, Environment *env) {
 
     return steps;
 }
-
-/**
- * This function is programmed to execute the colwill/rescorla rat experiments.
- * This is quite a hack and just suitable for the specific experiments:-)
- * Hereby, reset denotes when the testing phase starts.
- * during testing the returned reward denotes if the action was the better one!
- */
-void startCRRatExperiment(Environment *env, ofstream *out) {
-    ClassifierList *population = new ClassifierList(env);
-    cout << population;
-
-    ClassifierList *matchSet, *actionSet = 0;
-    int time = 0;
-    int steps = 0;
-    double rho0 = 0;
-    Perception *situation = new Perception();
-    Perception *previousSituation = new Perception();
-    Action *act = new Action();
-
-    while (env->reset() == 1) {
-        if (DO_MENTAL_ACTING_STEPS > 0)
-            population->doOneStepMentalActing(DO_MENTAL_ACTING_STEPS);
-        steps = 0;
-        env->getSituation(situation);
-        while (!env->isReset()) {
-            matchSet = new ClassifierList(population, situation);
-
-            if (steps > 0) {
-                //Learning in the last action set.
-                actionSet->applyALP(previousSituation, act, situation, time + steps, population, matchSet);
-                actionSet->applyReinforcementLearning(rho0, matchSet->getMaximumQR());
-                delete actionSet;
-            }
-
-            matchSet->chooseAction(act, population, situation);
-            actionSet = new ClassifierList(matchSet, act);
-            delete matchSet;
-
-            //cout<<situation<<"-"<<act<<endl;
-
-            rho0 = env->executeAction(act);
-            steps++;
-            time++;
-
-            previousSituation->setPerception(situation);
-            env->getSituation(situation);
-
-            if (env->isReset()) {
-                //Learning in the current action set if end of trial.
-                actionSet->applyALP(previousSituation, act, situation, time + steps, population, 0);
-                actionSet->applyReinforcementLearning(rho0, 0);
-            }
-        }
-        delete actionSet;
-        actionSet = 0;
-    }
-
-    //*out<<population<<endl;
-
-    int testTrial = 0;
-    do {
-        //do final phase here and record behavior
-        //hereby we assume one-step problem but execute the set behavior
-        if (DO_MENTAL_ACTING_STEPS > 0)
-            population->doOneStepMentalActing(DO_MENTAL_ACTING_STEPS);
-        steps = 0;
-        env->getSituation(situation);
-        testTrial++;
-        while (!env->isReset()) {
-            matchSet = new ClassifierList(population, situation);
-
-            if (steps > 0) {
-                //Learning in the last action set.
-                actionSet->applyALP(previousSituation, act, situation, time + steps, population, matchSet);
-                actionSet->applyReinforcementLearning(rho0, matchSet->getMaximumQR());
-                delete actionSet;
-            }
-            matchSet->chooseAction(act, population, situation);
-            actionSet = new ClassifierList(matchSet, act);
-            delete matchSet;
-
-            //*out<<situation<<"-"<<act<<endl;
-
-            rho0 = env->executeAction(act);
-            steps++;
-            time++;
-
-            previousSituation->setPerception(situation);
-            env->getSituation(situation);
-
-            if (env->isReset()) {
-                //Learning in the current action set if end of trial.
-                actionSet->applyALP(previousSituation, act, situation, time + steps, population, 0);
-                actionSet->applyReinforcementLearning(0, 0);
-            }
-        }
-        *out << testTrial << " " << rho0 << " " << population->getSize() << endl;
-
-        delete actionSet;
-        actionSet = 0;
-    } while (env->reset() == 2);
-
-    delete situation;
-    delete previousSituation;
-    delete act;
-
-    //*out<<population<<endl;
-
-    population->deleteClassifiers();
-    delete population;
-}
-
 
 /**
  * Prints Classifiers that match in from the environment env requested test situations.

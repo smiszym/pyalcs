@@ -22,8 +22,6 @@ set(SOURCE_FILES
         ClassifierList.h
         Condition.cc
         Condition.h
-        CRRatEnvironment.cc
-        CRRatEnvironment.h
         Effect.cc
         Effect.h
         Environment.cc
