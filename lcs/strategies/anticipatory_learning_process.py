@@ -20,6 +20,7 @@ def add_classifier(child, population, new_list, theta_exp: int) -> None:
     theta_exp: int
         experience threshold for subsumption
     """
+    # C++: ClassifierList::insertALPOffspringToNewList()
     # TODO: p0: write tests
     old_cl = None
 

@@ -682,6 +682,8 @@ void ClassifierList::applyEnhancedEffectPartCheck(ClassifierList **newList, Perc
  * Looks for subsuming / similar classifiers. If no appropriate classifier was found, 
  * the offspring is added to newList. Returns if an appropriate, old classifier was found.
  * This method is called from the ALP application.
+ *
+ * Python: anticipatory_learning_process.add_classifier()
  */
 int ClassifierList::insertALPOffspringToNewList(Classifier *child, ClassifierList **newList) {
     Classifier *oldCl = 0;
