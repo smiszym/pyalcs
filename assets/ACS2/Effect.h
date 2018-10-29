@@ -18,14 +18,14 @@
 #include<fstream>
 
 #include"Perception.h"
-#include"ProbCharPosList.h"
+#include"EnhancedEffect.h"
 #include"Condition.h"
 
 using namespace std;
 
 class Effect {
 public:
-    Effect() { list = new ProbCharPosList(); }
+    Effect() { list = new EnhancedEffect(); }
 
     Effect(Effect *eff);
 
@@ -55,12 +55,12 @@ public:
 
     int getSpecificity() { return list->getSize(); }
 
-    ProbCharPosList *getList() { return list; }
+    EnhancedEffect *getList() { return list; }
 
     friend ostream &operator<<(ostream &out, Effect *e);
 
 private:
-    ProbCharPosList *list;
+    EnhancedEffect *list;
 };
 
 #endif

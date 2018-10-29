@@ -14,12 +14,12 @@
 #include<iostream>
 
 #include"ProbabilityEnhancedAttribute.h"
-#include"ProbCharPosList.h"
+#include"EnhancedEffect.h"
 
 /**
  * Creates a new list with one item
  */
-ProbCharPosList::ProbCharPosList(char chr, int pos) {
+EnhancedEffect::EnhancedEffect(char chr, int pos) {
     first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), pos);
     act = first;
     size = 1;
@@ -28,7 +28,7 @@ ProbCharPosList::ProbCharPosList(char chr, int pos) {
 /**
  * Creates a copy of the old ProbCharPosList oldList.
  */
-ProbCharPosList::ProbCharPosList(ProbCharPosList *oldList) {
+EnhancedEffect::EnhancedEffect(EnhancedEffect *oldList) {
     ProbCharPosItem *cplp = oldList->first, *cplpNew;
 
     if (oldList->first != 0) {
@@ -51,7 +51,7 @@ ProbCharPosList::ProbCharPosList(ProbCharPosList *oldList) {
  * Does not affect pointer act except if the first item is inserted.
  * @return If item was successfully inserted.
  */
-int ProbCharPosList::insert(char chr, int pos) {
+int EnhancedEffect::insert(char chr, int pos) {
     ProbCharPosItem *cpip, *cpipl;
 
     //First item
@@ -88,7 +88,7 @@ int ProbCharPosList::insert(char chr, int pos) {
  * Insert character chr at the empty position epos 
  * Does not affect pointer act except if the first item is inserted.
  */
-int ProbCharPosList::insertAt(char chr, int epos) {
+int EnhancedEffect::insertAt(char chr, int epos) {
     ProbCharPosItem *cpip, *cpipl;
     int pos;
 
@@ -125,7 +125,7 @@ int ProbCharPosList::insertAt(char chr, int epos) {
 /**
  * Removes item with key pos.
  */
-int ProbCharPosList::remove(int pos) {
+int EnhancedEffect::remove(int pos) {
     ProbCharPosItem *cpip, *cpipl;
     for (cpip = first, cpipl = 0; cpip != 0; cpip = cpip->next) {
         if (cpip->p == pos)
@@ -142,7 +142,7 @@ int ProbCharPosList::remove(int pos) {
 /**
  * Removes nr'st item. (0 init)
  */
-int ProbCharPosList::removeAt(int nr) {
+int EnhancedEffect::removeAt(int nr) {
     ProbCharPosItem *cpip, *cpipl;
     for (cpip = first, cpipl = 0; nr != 0 && cpip != 0; cpip = cpip->next) {
         nr--;
@@ -159,7 +159,7 @@ int ProbCharPosList::removeAt(int nr) {
 /**
  * Direct Remover with pointers.
  */
-void ProbCharPosList::remove(ProbCharPosItem *cpip, ProbCharPosItem *cpipl) {
+void EnhancedEffect::remove(ProbCharPosItem *cpip, ProbCharPosItem *cpipl) {
     if (cpipl == 0) {
         first = cpip->next;
     } else {
@@ -174,7 +174,7 @@ void ProbCharPosList::remove(ProbCharPosItem *cpip, ProbCharPosItem *cpipl) {
 /**
  * Returns current ProbCharPosItem and sets act (current) to the next item in the list
  */
-ProbCharPosItem *ProbCharPosList::getNextItem() {
+ProbCharPosItem *EnhancedEffect::getNextItem() {
     ProbCharPosItem *ret = act;
     if (act != 0)
         act = act->next;
@@ -184,7 +184,7 @@ ProbCharPosItem *ProbCharPosList::getNextItem() {
 /**
  * Returns item with key pos (if it exists), 0 otherwise
  */
-ProbCharPosItem *ProbCharPosList::getItem(int pos) {
+ProbCharPosItem *EnhancedEffect::getItem(int pos) {
     for (ProbCharPosItem *item = first; item != 0; item = item->next)
         if (item->p == pos)
             return item;

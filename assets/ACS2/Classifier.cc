@@ -115,7 +115,7 @@ int Classifier::generalizeRandomUnchangeCond(int noSpec) {
 
     CharPosList *cpl = C->getList();
     cpl->reset();
-    ProbCharPosList *epl = E->getList();
+    EnhancedEffect *epl = E->getList();
     epl->reset();
 
     CharPosItem *cpi = cpl->getNextItem();
@@ -160,7 +160,7 @@ int Classifier::doesAnticipateChange() {
 int Classifier::getUnchangeSpec() {
     CharPosList *cpl = C->getList();
     cpl->reset();
-    ProbCharPosList *epl = E->getList();
+    EnhancedEffect *epl = E->getList();
     epl->reset();
     int spec = 0;
 
@@ -285,9 +285,9 @@ int Classifier::doesMatchBackwards(Perception *percept) {
 
 int Classifier::doesLink(Classifier *cl) {
     CharPosList *cpl = C->getList();
-    ProbCharPosList *pcpl = E->getList();
+    EnhancedEffect *pcpl = E->getList();
     CharPosList *cpl2 = cl->C->getList();
-    ProbCharPosList *pcpl2 = cl->E->getList();
+    EnhancedEffect *pcpl2 = cl->E->getList();
 
     cpl->reset();
     cpl2->reset();
@@ -323,7 +323,7 @@ int Classifier::doesLink(Classifier *cl) {
 }
 
 
-int Classifier::doesLink(char chr, int pos, CharPosList *cpl2, CharPosItem **cpi2, ProbCharPosList *pcpl2,
+int Classifier::doesLink(char chr, int pos, CharPosList *cpl2, CharPosItem **cpi2, EnhancedEffect *pcpl2,
                          ProbCharPosItem **pcpi2) {
     while ((*cpi2) != 0 && (*cpi2)->getPos() < pos)//look for next relevant att. in cl.C
         (*cpi2) = cpl2->getNextItem();

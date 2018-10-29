@@ -21,7 +21,7 @@ using namespace std;
  * Constructs a copy of 'eff'.
  */
 Effect::Effect(Effect *eff) {
-    list = new ProbCharPosList(eff->list);
+    list = new EnhancedEffect(eff->list);
 }
 
 /**
@@ -30,7 +30,7 @@ Effect::Effect(Effect *eff) {
  */
 Effect::Effect(Effect *ef1, Effect *ef2, double q1, double q2, Perception *percept) {
     //copy the one list first and then work on the new one and the second effect
-    list = new ProbCharPosList(ef1->list);
+    list = new EnhancedEffect(ef1->list);
 
     // Reset iterator to the beginning
     list->reset();

@@ -23,7 +23,7 @@
 #include"Perception.h"
 #include"ACSConstants.h"
 #include"CharPosList.h"
-#include"ProbCharPosList.h"
+#include"EnhancedEffect.h"
 
 using namespace std;
 
@@ -158,7 +158,7 @@ private:
     int generalizeRandomUnchangeCond(int noSpec);
 
     int
-    doesLink(char chr, int pos, CharPosList *cpl2, CharPosItem **cpi2, ProbCharPosList *pcpl2, ProbCharPosItem **pcpi2);
+    doesLink(char chr, int pos, CharPosList *cpl2, CharPosItem **cpi2, EnhancedEffect *pcpl2, ProbCharPosItem **pcpi2);
 
     int doesTightLink(char chr, int pos, CharPosList *cpl2, CharPosItem **cpi2);
 

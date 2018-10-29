@@ -40,7 +40,7 @@ set(SOURCE_FILES
         PMark.h
         ProbabilityEnhancedAttribute.cc
         ProbabilityEnhancedAttribute.h
-        ProbCharPosList.cc
-        ProbCharPosList.h)
+        EnhancedEffect.cc
+        EnhancedEffect.h)
 
 add_executable(ACS2 ${SOURCE_FILES})
