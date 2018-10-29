@@ -38,8 +38,8 @@ set(SOURCE_FILES
         Perception.h
         PMark.cc
         PMark.h
-        ProbCharList.cc
-        ProbCharList.h
+        ProbabilityEnhancedAttribute.cc
+        ProbabilityEnhancedAttribute.h
         ProbCharPosList.cc
         ProbCharPosList.h)
 

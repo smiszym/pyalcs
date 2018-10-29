@@ -17,20 +17,20 @@
 
 #include<iostream>
 
-#include"ProbCharList.h"
+#include"ProbabilityEnhancedAttribute.h"
 
 // Node in ProbCharPosList.
-// (position, ProbCharList) tuple, along with a pointer to the next node.
+// (position, ProbabilityEnhancedAttribute) tuple, along with a pointer to the next node.
 class ProbCharPosItem {
     friend class ProbCharPosList;
 
 public:
     int getPos() { return p; }
 
-    ProbCharList *getItem() { return item; }
+    ProbabilityEnhancedAttribute *getItem() { return item; }
 
 private:
-    ProbCharPosItem(ProbCharList *pcl, int pos) {
+    ProbCharPosItem(ProbabilityEnhancedAttribute *pcl, int pos) {
         p = pos;
         item = pcl;
         next = 0;
@@ -42,13 +42,13 @@ private:
     }
 
     int p;
-    ProbCharList *item;
+    ProbabilityEnhancedAttribute *item;
 
     ProbCharPosItem *next;
 };
 
 // Full Enhanced Effect representation.
-// List of (position, ProbCharList) tuples, with a stored iterator.
+// List of (position, ProbabilityEnhancedAttribute) tuples, with a stored iterator.
 class ProbCharPosList {
     friend class Effect;
 

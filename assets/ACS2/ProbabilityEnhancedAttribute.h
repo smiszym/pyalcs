@@ -22,19 +22,19 @@ using namespace std;
 
 // Single element of Enhanced Effect.
 // List of (character, probability) tuples.
-class ProbCharList {
+class ProbabilityEnhancedAttribute {
 public:
-    ProbCharList(char c) {
+    ProbabilityEnhancedAttribute(char c) {
         p = 1.0;
         this->c = c;
         next = 0;
     }
 
-    ProbCharList(ProbCharList *oldList);
+    ProbabilityEnhancedAttribute(ProbabilityEnhancedAttribute *oldList);
 
-    ~ProbCharList() { delete next; }
+    ~ProbabilityEnhancedAttribute() { delete next; }
 
-    void insert(ProbCharList *merger, double q1, double q2);
+    void insert(ProbabilityEnhancedAttribute *merger, double q1, double q2);
 
     void insert(char c, double q1, double q2);
 
@@ -48,18 +48,18 @@ public:
 
     int isEnhanced() { if (next != 0) return 1; else return 0; }
 
-    int isSimilar(ProbCharList *list2);
+    int isSimilar(ProbabilityEnhancedAttribute *list2);
 
     int increaseProbability(char ch, double updateRate);
 
-    friend ostream &operator<<(ostream &out, ProbCharList *pcl);
+    friend ostream &operator<<(ostream &out, ProbabilityEnhancedAttribute *pcl);
 
 private:
     void adjustProbabilities();
 
     void adjustProbabilities(double probSum);
 
-    ProbCharList *next;
+    ProbabilityEnhancedAttribute *next;
     double p;
     char c;
 };

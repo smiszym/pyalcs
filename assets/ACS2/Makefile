@@ -18,8 +18,8 @@ CC_OPTS  = -g -Wall
 COMPILER = g++
 EXECNAME = $(NAME).$(SYSTEM)
 
-$(NAME):	$(NAME).o Condition.o Perception.o Action.o CharPosList.o ProbCharPosList.o ProbCharList.o Effect.o CharCharPosList.o CharList.o PMark.o Classifier.o ClassifierList.o ACSConstants.h Environment.o MazeEnvironment.o MPEnvironment.o BWEnvironment.o HandEyeEnvironment.o GripperEnvironment.o
-		$(COMPILER) $(CC_OPTS) -o $(NAME).out $(LINKMATH) $(NAME).o Condition.o Perception.o Action.o Effect.o CharPosList.o ProbCharPosList.o ProbCharList.o CharCharPosList.o CharList.o PMark.o Classifier.o ClassifierList.o Environment.o MazeEnvironment.o MPEnvironment.o BWEnvironment.o HandEyeEnvironment.o GripperEnvironment.o
+$(NAME):	$(NAME).o Condition.o Perception.o Action.o CharPosList.o ProbCharPosList.o ProbabilityEnhancedAttribute.o Effect.o CharCharPosList.o CharList.o PMark.o Classifier.o ClassifierList.o ACSConstants.h Environment.o MazeEnvironment.o MPEnvironment.o BWEnvironment.o HandEyeEnvironment.o GripperEnvironment.o
+		$(COMPILER) $(CC_OPTS) -o $(NAME).out $(LINKMATH) $(NAME).o Condition.o Perception.o Action.o Effect.o CharPosList.o ProbCharPosList.o ProbabilityEnhancedAttribute.o CharCharPosList.o CharList.o PMark.o Classifier.o ClassifierList.o Environment.o MazeEnvironment.o MPEnvironment.o BWEnvironment.o HandEyeEnvironment.o GripperEnvironment.o
 
 $(NAME).o:	$(NAME).cc ACSConstants.h Perception.h Condition.h Action.h Effect.h PMark.h Classifier.h ClassifierList.h Environment.h MazeEnvironment.h MPEnvironment.h BWEnvironment.h HandEyeEnvironment.h GripperEnvironment.h
 		$(COMPILER) -c $(CC_OPTS) $(NAME).cc
@@ -42,14 +42,14 @@ CharPosList.o:  CharPosList.cc CharPosList.h
 Action.o:       Action.cc Action.h Environment.h
 		$(COMPILER) -c $(CC_OPTS) Action.cc
 
-Effect.o: 	Effect.cc Effect.h Perception.h ProbCharPosList.h ProbCharList.h Condition.h
+Effect.o: 	Effect.cc Effect.h Perception.h ProbCharPosList.h ProbabilityEnhancedAttribute.h Condition.h
 		$(COMPILER) -c $(CC_OPTS) Effect.cc
 
-ProbCharPosList.o:  ProbCharPosList.cc ProbCharPosList.h ProbCharList.h CharPosList.h
+ProbCharPosList.o:  ProbCharPosList.cc ProbCharPosList.h ProbabilityEnhancedAttribute.h CharPosList.h
 		$(COMPILER) -c $(CC_OPTS) ProbCharPosList.cc
 
-ProbCharList.o: ProbCharList.cc ProbCharList.h
-		$(COMPILER) -c $(CC_OPTS) ProbCharList.cc
+ProbabilityEnhancedAttribute.o: ProbabilityEnhancedAttribute.cc ProbabilityEnhancedAttribute.h
+		$(COMPILER) -c $(CC_OPTS) ProbabilityEnhancedAttribute.cc
 
 PMark.o: 	PMark.cc PMark.h
 		$(COMPILER) -c $(CC_OPTS) PMark.cc

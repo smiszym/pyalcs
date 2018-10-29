@@ -13,19 +13,19 @@
 
 #include<iostream>
 
-#include"ProbCharList.h"
+#include"ProbabilityEnhancedAttribute.h"
 
 using namespace std;
 
 /**
  * Creates a copy of the old ProbCharList 'oldList'.
  */
-ProbCharList::ProbCharList(ProbCharList *oldList) {
+ProbabilityEnhancedAttribute::ProbabilityEnhancedAttribute(ProbabilityEnhancedAttribute *oldList) {
     if (oldList != 0) {
         p = oldList->p;
         c = oldList->c;
         if (oldList->next != 0)
-            next = new ProbCharList(oldList->next);
+            next = new ProbabilityEnhancedAttribute(oldList->next);
         else
             next = 0;
     }
@@ -35,12 +35,12 @@ ProbCharList::ProbCharList(ProbCharList *oldList) {
  * Increases the probablity of the character ch by the rate updateRate and relveals the overall probablity.
  * Returns if the character was actually present.
  */
-int ProbCharList::increaseProbability(char ch, double updateRate) {
-    ProbCharList *listP = this;
+int ProbabilityEnhancedAttribute::increaseProbability(char ch, double updateRate) {
+    ProbabilityEnhancedAttribute *listP = this;
     while (listP != 0 && listP->c != ch)
         listP = listP->next;
     if (listP == 0)
-        return 0; //Character was not found in this ProbCharList
+        return 0; //Character was not found in this ProbabilityEnhancedAttribute
     double update = updateRate * (1 - listP->p);
     listP->p += update;
     adjustProbabilities(1. + update);
@@ -52,10 +52,10 @@ int ProbCharList::increaseProbability(char ch, double updateRate) {
  * Assures that characters are not represented twice!
  * q1 and q2 represent the qualities of the corresponding classifiers and are weighted in
  */
-void ProbCharList::insert(ProbCharList *merger, double q1, double q2) {
-    ProbCharList *mergeList = new ProbCharList(merger);
+void ProbabilityEnhancedAttribute::insert(ProbabilityEnhancedAttribute *merger, double q1, double q2) {
+    ProbabilityEnhancedAttribute *mergeList = new ProbabilityEnhancedAttribute(merger);
 
-    ProbCharList *pclp, *pclpnew;
+    ProbabilityEnhancedAttribute *pclp, *pclpnew;
     for (pclp = this; pclp != 0; pclp = pclp->next) {
         pclp->p *= q1;
         for (pclpnew = mergeList; pclpnew != 0; pclpnew = pclpnew->next) {
@@ -71,7 +71,7 @@ void ProbCharList::insert(ProbCharList *merger, double q1, double q2) {
 
     for (pclpnew = mergeList; pclpnew != 0; pclpnew = pclpnew->next) {
         if (pclpnew->p != 0) {
-            pclp->next = new ProbCharList(pclpnew->c);
+            pclp->next = new ProbabilityEnhancedAttribute(pclpnew->c);
             pclp = pclp->next;
             pclp->p = pclpnew->p * q2;
         }
@@ -83,9 +83,9 @@ void ProbCharList::insert(ProbCharList *merger, double q1, double q2) {
 /**
  * Inserts Character c if not yet existent. Sets probability of c to the average.
  */
-void ProbCharList::insert(char c) {
+void ProbabilityEnhancedAttribute::insert(char c) {
     double n = 0;
-    ProbCharList *pclp;
+    ProbabilityEnhancedAttribute *pclp;
     for (pclp = this; pclp != 0; pclp = pclp->next)
         n++;
 
@@ -98,10 +98,10 @@ void ProbCharList::insert(char c) {
  * If it does not exist yet, add it to the list, set the prob to prob and adjust probabilities. 
  * q1 and q2 represent the qualities of the corresponding classifiers and are weighted in
  */
-void ProbCharList::insert(char c, double q1, double q2) {
+void ProbabilityEnhancedAttribute::insert(char c, double q1, double q2) {
     // although pSum should be one, I decided to recalculate it here!
     double pSum = 0;
-    ProbCharList *pclp = this;
+    ProbabilityEnhancedAttribute *pclp = this;
     int found = 0;
 
     // Look for Character
@@ -118,7 +118,7 @@ void ProbCharList::insert(char c, double q1, double q2) {
     if (!found) {
         //Charcter does not exist yet -> insert in after this guy
         pclp = next;
-        next = new ProbCharList(c);
+        next = new ProbabilityEnhancedAttribute(c);
         next->next = pclp;
         next->p = q2;
         pSum += q2;
@@ -131,8 +131,8 @@ void ProbCharList::insert(char c, double q1, double q2) {
  * Note that the last character is never deleted (which should never occur anyways).
  * Returns one if the character was found and removed, 0 otherwise.
  */
-int ProbCharList::remove(char chr) {
-    ProbCharList *pclp, *pclpl = 0;
+int ProbabilityEnhancedAttribute::remove(char chr) {
+    ProbabilityEnhancedAttribute *pclp, *pclpl = 0;
     //Look for character
     for (pclp = this; pclp != 0; pclp = pclp->next) {
         if (pclp->c == chr)
@@ -165,10 +165,10 @@ int ProbCharList::remove(char chr) {
  * Determines the character with the highest probability in the list.
  * Returns the character witht the highest associated probability.
  */
-char ProbCharList::getBestChar() {
+char ProbabilityEnhancedAttribute::getBestChar() {
     double bestP = 0.0;
     char bestC = '\0';
-    for (ProbCharList *listp = this; listp != 0; listp = listp->next) {
+    for (ProbabilityEnhancedAttribute *listp = this; listp != 0; listp = listp->next) {
         if (listp->p > bestP) {
             bestP = listp->p;
             bestC = listp->c;
@@ -181,8 +181,8 @@ char ProbCharList::getBestChar() {
  * Determines if the list contains character 'testC'
  * Returns one if the character is contained, 0 otherwise.
  */
-int ProbCharList::doesContain(char testC) {
-    for (ProbCharList *listp = this; listp != 0; listp = listp->next) {
+int ProbabilityEnhancedAttribute::doesContain(char testC) {
+    for (ProbabilityEnhancedAttribute *listp = this; listp != 0; listp = listp->next) {
         if (listp->c == testC)
             return 1;
     }
@@ -193,7 +193,7 @@ int ProbCharList::doesContain(char testC) {
  * Determines if the two lists specify the same characters. 
  * Order and probabilities are not considered.
  */
-int ProbCharList::isSimilar(ProbCharList *list2) {
+int ProbabilityEnhancedAttribute::isSimilar(ProbabilityEnhancedAttribute *list2) {
     if (!isEnhanced()) {
         if (list2->isEnhanced()) {
             return 0;
@@ -205,7 +205,7 @@ int ProbCharList::isSimilar(ProbCharList *list2) {
         if (!list2->isEnhanced()) {
             return 0;
         } else {
-            ProbCharList *listp1, *listp2;
+            ProbabilityEnhancedAttribute *listp1, *listp2;
             for (listp1 = this; listp1 != 0; listp1 = listp1->next) {
                 for (listp2 = list2; listp2 != 0; listp2 = listp2->next)
                     if (listp2->c == listp1->c)
@@ -228,8 +228,8 @@ int ProbCharList::isSimilar(ProbCharList *list2) {
 /**
  * Adjusts the probabilities in the list to sum to one.
  */
-void ProbCharList::adjustProbabilities() {
-    ProbCharList *pclp;
+void ProbabilityEnhancedAttribute::adjustProbabilities() {
+    ProbabilityEnhancedAttribute *pclp;
     double pSum = 0.;
     for (pclp = this; pclp != 0; pclp = pclp->next)
         pSum += pclp->p;
@@ -239,17 +239,17 @@ void ProbCharList::adjustProbabilities() {
 /**
  * Adjusts the probabilities in the list to sum to one given the current sum of the probabilities.
  */
-void ProbCharList::adjustProbabilities(double pSum) {
-    ProbCharList *pclp;
+void ProbabilityEnhancedAttribute::adjustProbabilities(double pSum) {
+    ProbabilityEnhancedAttribute *pclp;
     for (pclp = this; pclp != 0; pclp = pclp->next)
         pclp->p /= pSum;
 }
 
 
-ostream &operator<<(ostream &out, ProbCharList *pcl) {
+ostream &operator<<(ostream &out, ProbabilityEnhancedAttribute *pcl) {
     if (pcl->isEnhanced()) {
         out << " {";
-        for (ProbCharList *listp = pcl; listp != 0; listp = listp->next) {
+        for (ProbabilityEnhancedAttribute *listp = pcl; listp != 0; listp = listp->next) {
             out << "(" << listp->c << ")";//,"<<listp->p<<")";
             if (listp->next != 0)
                 out << ',';

@@ -13,14 +13,14 @@
 
 #include<iostream>
 
-#include"ProbCharList.h"
+#include"ProbabilityEnhancedAttribute.h"
 #include"ProbCharPosList.h"
 
 /**
  * Creates a new list with one item
  */
 ProbCharPosList::ProbCharPosList(char chr, int pos) {
-    first = new ProbCharPosItem(new ProbCharList(chr), pos);
+    first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), pos);
     act = first;
     size = 1;
 }
@@ -32,11 +32,11 @@ ProbCharPosList::ProbCharPosList(ProbCharPosList *oldList) {
     ProbCharPosItem *cplp = oldList->first, *cplpNew;
 
     if (oldList->first != 0) {
-        first = new ProbCharPosItem(new ProbCharList(cplp->getItem()), cplp->p);
+        first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(cplp->getItem()), cplp->p);
         cplpNew = first;
         while (cplp->next != 0) {
             cplp = cplp->next;
-            cplpNew->next = new ProbCharPosItem(new ProbCharList(cplp->getItem()), cplp->p);
+            cplpNew->next = new ProbCharPosItem(new ProbabilityEnhancedAttribute(cplp->getItem()), cplp->p);
             cplpNew = cplpNew->next;
         }
     } else {
@@ -56,7 +56,7 @@ int ProbCharPosList::insert(char chr, int pos) {
 
     //First item
     if (first == 0) {
-        first = new ProbCharPosItem(new ProbCharList(chr), pos);
+        first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), pos);
         size = 1;
         act = first;
         return 1;
@@ -73,10 +73,10 @@ int ProbCharPosList::insert(char chr, int pos) {
     } else {
         //Now insert at the determined position
         if (cpipl == 0) {
-            first = new ProbCharPosItem(new ProbCharList(chr), pos);
+            first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), pos);
             first->next = cpip;
         } else {
-            cpipl->next = new ProbCharPosItem(new ProbCharList(chr), pos);
+            cpipl->next = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), pos);
             cpipl->next->next = cpip;
         }
         size++;
@@ -94,7 +94,7 @@ int ProbCharPosList::insertAt(char chr, int epos) {
 
     //First item
     if (first == 0) {
-        first = new ProbCharPosItem(new ProbCharList(chr), epos);
+        first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), epos);
         size = 1;
         act = first;
         return 1;
@@ -110,10 +110,10 @@ int ProbCharPosList::insertAt(char chr, int epos) {
 
     //Now insert!
     if (cpipl == 0) {
-        first = new ProbCharPosItem(new ProbCharList(chr), epos);
+        first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), epos);
         first->next = cpip;
     } else {
-        cpipl->next = new ProbCharPosItem(new ProbCharList(chr), pos + epos + 1);
+        cpipl->next = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), pos + epos + 1);
         cpipl->next->next = cpip;
     }
     size++;
