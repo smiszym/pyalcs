@@ -20,7 +20,7 @@
  * Creates a new list with one item
  */
 EnhancedEffect::EnhancedEffect(char chr, int pos) {
-    first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), pos);
+    first = new AttrWithPos(new ProbabilityEnhancedAttribute(chr), pos);
     act = first;
     size = 1;
 }
@@ -29,14 +29,14 @@ EnhancedEffect::EnhancedEffect(char chr, int pos) {
  * Creates a copy of the old ProbCharPosList oldList.
  */
 EnhancedEffect::EnhancedEffect(EnhancedEffect *oldList) {
-    ProbCharPosItem *cplp = oldList->first, *cplpNew;
+    AttrWithPos *cplp = oldList->first, *cplpNew;
 
     if (oldList->first != 0) {
-        first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(cplp->getItem()), cplp->p);
+        first = new AttrWithPos(new ProbabilityEnhancedAttribute(cplp->getItem()), cplp->p);
         cplpNew = first;
         while (cplp->next != 0) {
             cplp = cplp->next;
-            cplpNew->next = new ProbCharPosItem(new ProbabilityEnhancedAttribute(cplp->getItem()), cplp->p);
+            cplpNew->next = new AttrWithPos(new ProbabilityEnhancedAttribute(cplp->getItem()), cplp->p);
             cplpNew = cplpNew->next;
         }
     } else {
@@ -52,11 +52,11 @@ EnhancedEffect::EnhancedEffect(EnhancedEffect *oldList) {
  * @return If item was successfully inserted.
  */
 int EnhancedEffect::insert(char chr, int pos) {
-    ProbCharPosItem *cpip, *cpipl;
+    AttrWithPos *cpip, *cpipl;
 
     //First item
     if (first == 0) {
-        first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), pos);
+        first = new AttrWithPos(new ProbabilityEnhancedAttribute(chr), pos);
         size = 1;
         act = first;
         return 1;
@@ -73,10 +73,10 @@ int EnhancedEffect::insert(char chr, int pos) {
     } else {
         //Now insert at the determined position
         if (cpipl == 0) {
-            first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), pos);
+            first = new AttrWithPos(new ProbabilityEnhancedAttribute(chr), pos);
             first->next = cpip;
         } else {
-            cpipl->next = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), pos);
+            cpipl->next = new AttrWithPos(new ProbabilityEnhancedAttribute(chr), pos);
             cpipl->next->next = cpip;
         }
         size++;
@@ -89,12 +89,12 @@ int EnhancedEffect::insert(char chr, int pos) {
  * Does not affect pointer act except if the first item is inserted.
  */
 int EnhancedEffect::insertAt(char chr, int epos) {
-    ProbCharPosItem *cpip, *cpipl;
+    AttrWithPos *cpip, *cpipl;
     int pos;
 
     //First item
     if (first == 0) {
-        first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), epos);
+        first = new AttrWithPos(new ProbabilityEnhancedAttribute(chr), epos);
         size = 1;
         act = first;
         return 1;
@@ -110,10 +110,10 @@ int EnhancedEffect::insertAt(char chr, int epos) {
 
     //Now insert!
     if (cpipl == 0) {
-        first = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), epos);
+        first = new AttrWithPos(new ProbabilityEnhancedAttribute(chr), epos);
         first->next = cpip;
     } else {
-        cpipl->next = new ProbCharPosItem(new ProbabilityEnhancedAttribute(chr), pos + epos + 1);
+        cpipl->next = new AttrWithPos(new ProbabilityEnhancedAttribute(chr), pos + epos + 1);
         cpipl->next->next = cpip;
     }
     size++;
@@ -126,7 +126,7 @@ int EnhancedEffect::insertAt(char chr, int epos) {
  * Removes item with key pos.
  */
 int EnhancedEffect::remove(int pos) {
-    ProbCharPosItem *cpip, *cpipl;
+    AttrWithPos *cpip, *cpipl;
     for (cpip = first, cpipl = 0; cpip != 0; cpip = cpip->next) {
         if (cpip->p == pos)
             break;
@@ -143,7 +143,7 @@ int EnhancedEffect::remove(int pos) {
  * Removes nr'st item. (0 init)
  */
 int EnhancedEffect::removeAt(int nr) {
-    ProbCharPosItem *cpip, *cpipl;
+    AttrWithPos *cpip, *cpipl;
     for (cpip = first, cpipl = 0; nr != 0 && cpip != 0; cpip = cpip->next) {
         nr--;
         cpipl = cpip;
@@ -159,7 +159,7 @@ int EnhancedEffect::removeAt(int nr) {
 /**
  * Direct Remover with pointers.
  */
-void EnhancedEffect::remove(ProbCharPosItem *cpip, ProbCharPosItem *cpipl) {
+void EnhancedEffect::remove(AttrWithPos *cpip, AttrWithPos *cpipl) {
     if (cpipl == 0) {
         first = cpip->next;
     } else {
@@ -174,8 +174,8 @@ void EnhancedEffect::remove(ProbCharPosItem *cpip, ProbCharPosItem *cpipl) {
 /**
  * Returns current ProbCharPosItem and sets act (current) to the next item in the list
  */
-ProbCharPosItem *EnhancedEffect::getNextItem() {
-    ProbCharPosItem *ret = act;
+AttrWithPos *EnhancedEffect::getNextItem() {
+    AttrWithPos *ret = act;
     if (act != 0)
         act = act->next;
     return ret;
@@ -184,8 +184,8 @@ ProbCharPosItem *EnhancedEffect::getNextItem() {
 /**
  * Returns item with key pos (if it exists), 0 otherwise
  */
-ProbCharPosItem *EnhancedEffect::getItem(int pos) {
-    for (ProbCharPosItem *item = first; item != 0; item = item->next)
+AttrWithPos *EnhancedEffect::getItem(int pos) {
+    for (AttrWithPos *item = first; item != 0; item = item->next)
         if (item->p == pos)
             return item;
     return 0;

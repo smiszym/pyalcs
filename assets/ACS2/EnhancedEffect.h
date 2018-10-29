@@ -21,7 +21,7 @@
 
 // Node in EnhancedEffect.
 // (position, ProbabilityEnhancedAttribute) tuple, along with a pointer to the next node.
-class ProbCharPosItem {
+class AttrWithPos {
     friend class EnhancedEffect;
 
 public:
@@ -30,13 +30,13 @@ public:
     ProbabilityEnhancedAttribute *getItem() { return item; }
 
 private:
-    ProbCharPosItem(ProbabilityEnhancedAttribute *pcl, int pos) {
+    AttrWithPos(ProbabilityEnhancedAttribute *pcl, int pos) {
         p = pos;
         item = pcl;
         next = 0;
     }
 
-    ~ProbCharPosItem() {
+    ~AttrWithPos() {
         delete item;
         delete next;
     }
@@ -44,7 +44,7 @@ private:
     int p;
     ProbabilityEnhancedAttribute *item;
 
-    ProbCharPosItem *next;
+    AttrWithPos *next;
 };
 
 // Full Enhanced Effect representation.
@@ -55,7 +55,7 @@ class EnhancedEffect {
 public:
     void reset() { act = first; }
 
-    ProbCharPosItem *getNextItem();
+    AttrWithPos *getNextItem();
 
 private:
     EnhancedEffect() {
@@ -80,12 +80,12 @@ private:
 
     int getSize() { return size; }
 
-    ProbCharPosItem *getItem(int pos);
+    AttrWithPos *getItem(int pos);
 
-    void remove(ProbCharPosItem *cpip, ProbCharPosItem *cpipl);
+    void remove(AttrWithPos *cpip, AttrWithPos *cpipl);
 
-    ProbCharPosItem *first;
-    ProbCharPosItem *act;
+    AttrWithPos *first;
+    AttrWithPos *act;
     int size;
 };
 

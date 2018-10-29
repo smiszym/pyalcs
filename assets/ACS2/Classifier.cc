@@ -119,7 +119,7 @@ int Classifier::generalizeRandomUnchangeCond(int noSpec) {
     epl->reset();
 
     CharPosItem *cpi = cpl->getNextItem();
-    ProbCharPosItem *epi = epl->getNextItem();
+    AttrWithPos *epi = epl->getNextItem();
     while (cpi != 0 && epi != 0) {
         if (cpi->getPos() < epi->getPos()) {
             if (pos == 0)
@@ -165,7 +165,7 @@ int Classifier::getUnchangeSpec() {
     int spec = 0;
 
     CharPosItem *cpi = cpl->getNextItem();
-    ProbCharPosItem *epi = epl->getNextItem();
+    AttrWithPos *epi = epl->getNextItem();
     while (cpi != 0 && epi != 0) {
         if (cpi->getPos() < epi->getPos()) {
             spec++;
@@ -296,9 +296,9 @@ int Classifier::doesLink(Classifier *cl) {
 
     //Check if cl.C matches this classifier
     CharPosItem *cpi = cpl->getNextItem();
-    ProbCharPosItem *pcpi = pcpl->getNextItem();
+    AttrWithPos *pcpi = pcpl->getNextItem();
     CharPosItem *cpi2 = cpl2->getNextItem();
-    ProbCharPosItem *pcpi2 = pcpl2->getNextItem();
+    AttrWithPos *pcpi2 = pcpl2->getNextItem();
 
     while ((cpi2 != 0 || pcpi2 != 0) && (cpi != 0 || pcpi != 0)) {
         if (cpi != 0) {
@@ -324,7 +324,7 @@ int Classifier::doesLink(Classifier *cl) {
 
 
 int Classifier::doesLink(char chr, int pos, CharPosList *cpl2, CharPosItem **cpi2, EnhancedEffect *pcpl2,
-                         ProbCharPosItem **pcpi2) {
+                         AttrWithPos **pcpi2) {
     while ((*cpi2) != 0 && (*cpi2)->getPos() < pos)//look for next relevant att. in cl.C
         (*cpi2) = cpl2->getNextItem();
     if ((*cpi2) == 0 || (*cpi2)->getPos() > pos) {//next specific att. in cl.C comes later

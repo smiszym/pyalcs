@@ -36,7 +36,7 @@ Effect::Effect(Effect *ef1, Effect *ef2, double q1, double q2, Perception *perce
     list->reset();
     ef2->list->reset();
 
-    ProbCharPosItem *item1, *item2;
+    AttrWithPos *item1, *item2;
     item1 = list->getNextItem();
     item2 = ef2->list->getNextItem();
 
@@ -89,7 +89,7 @@ Effect::Effect(Effect *ef1, Effect *ef2, double q1, double q2, Perception *perce
 Perception *Effect::getBestAnticipation(Perception *percept) {
     Perception *ant = new Perception(percept);
     list->reset();
-    ProbCharPosItem *item = list->getNextItem();
+    AttrWithPos *item = list->getNextItem();
     while (item != 0) {
         ant->setAttribute(item->getItem()->getBestChar(), item->getPos());
         item = list->getNextItem();
@@ -106,7 +106,7 @@ Perception *Effect::getBestAnticipation(Perception *percept) {
 int Effect::doesAnticipateCorrectly(Perception *p0, Perception *p1) {
     list->reset();
     int i;
-    ProbCharPosItem *item;
+    AttrWithPos *item;
 
     for (item = list->getNextItem(), i = 0; item != 0; item = list->getNextItem()) {
         for (; i < item->getPos(); i++)
@@ -130,7 +130,7 @@ int Effect::doesAnticipateCorrectly(Perception *p0, Perception *p1) {
  */
 int Effect::isEnhanced() {
     list->reset();
-    for (ProbCharPosItem *item = list->getNextItem(); item != 0; item = list->getNextItem()) {
+    for (AttrWithPos *item = list->getNextItem(); item != 0; item = list->getNextItem()) {
         if (item->getItem()->isEnhanced())
             return 1;
     }
@@ -146,7 +146,7 @@ int Effect::isEnhanced() {
 int Effect::doesMatch(Perception *percept, Perception *condPercept) {
     list->reset();
     int i = 0;
-    for (ProbCharPosItem *item = list->getNextItem(); item != 0; item = list->getNextItem(), i++) {
+    for (AttrWithPos *item = list->getNextItem(); item != 0; item = list->getNextItem(), i++) {
         for (; i < item->getPos(); i++) {
             if (percept->getAttribute(i) != condPercept->getAttribute(i))
                 return 0;
@@ -168,7 +168,7 @@ int Effect::doesMatch(Perception *percept, Perception *condPercept) {
 int Effect::doesSpecifyOnlyChangesBackwards(Perception *backAnt, Perception *situation) {
     int i = 0;
     list->reset();
-    for (ProbCharPosItem *item = list->getNextItem(); item != 0; item = list->getNextItem()) {
+    for (AttrWithPos *item = list->getNextItem(); item != 0; item = list->getNextItem()) {
         for (; i < item->getPos(); i++) {
             if (backAnt->getAttribute(i) != situation->getAttribute(i))
                 return 0; //change anticipated backwards although no change should occur
@@ -191,7 +191,7 @@ int Effect::doesSpecifyOnlyChangesBackwards(Perception *backAnt, Perception *sit
  */
 void Effect::updateEnhancedEffectProbs(Perception *percept, double updateRate) {
     list->reset();
-    for (ProbCharPosItem *item = list->getNextItem(); item != 0; item = list->getNextItem()) {
+    for (AttrWithPos *item = list->getNextItem(); item != 0; item = list->getNextItem()) {
         item->getItem()->increaseProbability(percept->getAttribute(item->getPos()), updateRate);
     }
 }
@@ -204,7 +204,7 @@ int Effect::isEqual(Effect *ef2) {
     list->reset();
     ef2->list->reset();
 
-    ProbCharPosItem *item1, *item2;
+    AttrWithPos *item1, *item2;
     item1 = list->getNextItem();
     item2 = ef2->list->getNextItem();
 
@@ -236,7 +236,7 @@ int Effect::isEqual(Effect *ef2) {
 Condition *Effect::getAndSpecialize(Perception *p0, Perception *p1) {
     Condition *con = new Condition();
     list->reset();
-    ProbCharPosItem *item;
+    AttrWithPos *item;
 
     int i;
     for (i = 0, item = list->getNextItem(); item != 0; item = list->getNextItem(), i++) {
@@ -269,7 +269,7 @@ Condition *Effect::getAndSpecialize(Perception *p0, Perception *p1) {
  */
 int Effect::isSpecializable(Perception *p0, Perception *p1) {
     list->reset();
-    for (ProbCharPosItem *item = list->getNextItem(); item != 0; item = list->getNextItem()) {
+    for (AttrWithPos *item = list->getNextItem(); item != 0; item = list->getNextItem()) {
         int pos = item->getPos();
         if (!item->getItem()->doesContain(p1->getAttribute(pos)) ||
             (p0->getAttribute(pos) == p1->getAttribute(pos) && !item->getItem()->isEnhanced()))
@@ -282,7 +282,7 @@ int Effect::isSpecializable(Perception *p0, Perception *p1) {
 ostream &operator<<(ostream &out, Effect *e) {
     e->list->reset();
     int i;
-    ProbCharPosItem *item;
+    AttrWithPos *item;
     for (item = e->list->getNextItem(), i = 0; item != 0 && i < Perception::length; item = e->list->getNextItem()) {
         for (; i < item->getPos(); i++)
             out << '#';
