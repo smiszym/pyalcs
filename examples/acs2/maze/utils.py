@@ -27,3 +27,21 @@ def calculate_performance(maze, population):
     return {
         'knowledge': nr_correct / len(transitions) * 100.0
     }
+
+
+def print_detailed_knowledge(maze, population):
+    result = ""
+    transitions = maze.env.get_all_possible_transitions()
+
+    # For all possible destinations from each path cell
+    for start, action, end in transitions:
+
+        p0 = maze.env.maze.perception(*start)
+        p1 = maze.env.maze.perception(*end)
+
+        result += "\n{}-{}-\n{}".format("".join(p0), action, "".join(p1))
+        result += "\n"
+        result += str(population.form_match_set(p0).form_action_set(action))
+        result += "\n"
+
+    return result
