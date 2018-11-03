@@ -72,6 +72,8 @@ int main(int args, char *argv[]) {
     startExperiments(env);
 
     delete env;
+
+    return 0;
 }
 
 /**
