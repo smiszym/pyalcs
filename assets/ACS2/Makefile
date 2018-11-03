@@ -11,15 +11,14 @@
 #     Makefile
 
 
-NAME = acs2++
+NAME = acs2
 LINKMATH = -lm
 CC_OPTS  = -g -Wall 
 #CC_opts = -O3
 COMPILER = g++
-EXECNAME = $(NAME).$(SYSTEM)
 
 $(NAME):	$(NAME).o Condition.o Perception.o Action.o CharPosList.o EnhancedEffect.o ProbabilityEnhancedAttribute.o Effect.o CharCharPosList.o CharList.o PMark.o Classifier.o ClassifierList.o ACSConstants.h Environment.o MazeEnvironment.o MPEnvironment.o BWEnvironment.o HandEyeEnvironment.o GripperEnvironment.o
-		$(COMPILER) $(CC_OPTS) -o $(NAME).out $(LINKMATH) $(NAME).o Condition.o Perception.o Action.o Effect.o CharPosList.o EnhancedEffect.o ProbabilityEnhancedAttribute.o CharCharPosList.o CharList.o PMark.o Classifier.o ClassifierList.o Environment.o MazeEnvironment.o MPEnvironment.o BWEnvironment.o HandEyeEnvironment.o GripperEnvironment.o
+		$(COMPILER) $(CC_OPTS) -o $(NAME) $(LINKMATH) $(NAME).o Condition.o Perception.o Action.o Effect.o CharPosList.o EnhancedEffect.o ProbabilityEnhancedAttribute.o CharCharPosList.o CharList.o PMark.o Classifier.o ClassifierList.o Environment.o MazeEnvironment.o MPEnvironment.o BWEnvironment.o HandEyeEnvironment.o GripperEnvironment.o
 
 $(NAME).o:	$(NAME).cc ACSConstants.h Perception.h Condition.h Action.h Effect.h PMark.h Classifier.h ClassifierList.h Environment.h MazeEnvironment.h MPEnvironment.h BWEnvironment.h HandEyeEnvironment.h GripperEnvironment.h
 		$(COMPILER) -c $(CC_OPTS) $(NAME).cc

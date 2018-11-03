@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.7)
-project(ACS2)
+project(acs2)
 
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
-        acs2++.cc
+        acs2.cc
         ACSConstants.h
         Action.cc
         Action.h
@@ -43,4 +43,4 @@ set(SOURCE_FILES
         EnhancedEffect.cc
         EnhancedEffect.h)
 
-add_executable(ACS2 ${SOURCE_FILES})
+add_executable(acs2 ${SOURCE_FILES})
