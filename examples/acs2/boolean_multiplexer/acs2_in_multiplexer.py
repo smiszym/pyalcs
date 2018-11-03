@@ -8,7 +8,7 @@ from lcs.agents.acs2 import ACS2, Configuration, EnvironmentAdapter
 
 class MultiplexerAdapter(EnvironmentAdapter):
     @staticmethod
-    def env_state_to_acs(env_state):
+    def to_genotype(env_state):
         return [str(x) for x in env_state]
 
 

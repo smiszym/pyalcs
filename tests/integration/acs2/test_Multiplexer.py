@@ -10,7 +10,7 @@ from .utils import count_macroclassifiers, count_microclassifiers
 
 class MultiplexerAdapter(EnvironmentAdapter):
     @staticmethod
-    def env_state_to_acs(env_state):
+    def to_genotype(env_state):
         return [str(x) for x in env_state]
 
 

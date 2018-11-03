@@ -101,7 +101,7 @@ class ACS2(Agent):
         # Initial conditions
         steps = 0
         raw_state = env.reset()
-        state = Perception(self.cfg.environment_adapter.env_state_to_acs(raw_state))
+        state = Perception(self.cfg.environment_adapter.to_genotype(raw_state))
         action = None
         reward = None
         total_reward = 0
@@ -149,13 +149,13 @@ class ACS2(Agent):
                 match_set,
                 self.cfg.number_of_possible_actions,
                 self.cfg.epsilon)
-            internal_action = self.cfg.environment_adapter.acs_action_to_env(action)
+            internal_action = self.cfg.environment_adapter.to_env_action(action)
             logger.debug("\tExecuting action: [%d]", action)
             action_set = match_set.form_action_set(action)
 
             prev_state = state
             raw_state, reward, done, _ = env.step(internal_action)
-            state = Perception(self.cfg.environment_adapter.env_state_to_acs(raw_state))
+            state = Perception(self.cfg.environment_adapter.to_genotype(raw_state))
 
             if done:
                 ClassifiersList.apply_alp(
@@ -198,7 +198,7 @@ class ACS2(Agent):
         # Initial conditions
         steps = 0
         raw_state = env.reset()
-        state = self.cfg.environment_adapter.env_state_to_acs(raw_state)
+        state = self.cfg.environment_adapter.to_genotype(raw_state)
 
         reward = None
         total_reward = 0
@@ -221,11 +221,11 @@ class ACS2(Agent):
                 match_set,
                 self.cfg.number_of_possible_actions,
                 epsilon=0.0)
-            internal_action = self.cfg.environment_adapter.acs_action_to_env(action)
+            internal_action = self.cfg.environment_adapter.to_env_action(action)
             action_set = match_set.form_action_set(action)
 
             raw_state, reward, done, _ = env.step(internal_action)
-            state = self.cfg.environment_adapter.env_state_to_acs(raw_state)
+            state = self.cfg.environment_adapter.to_genotype(raw_state)
 
             if done:
                 ClassifiersList.apply_reinforcement_learning(
