@@ -27,9 +27,6 @@
 
 using namespace std;
 
-int Perception::length = 0;
-Environment *Action::env = 0;
-
 /**
  * Keeps the maximum knowedge percentage reached so far.
  */

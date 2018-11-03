@@ -16,6 +16,8 @@
 #include <cstring>
 #include"Perception.h"
 
+int Perception::length = 0;
+
 /**
  * Creates a copy of the old perception 'old'.
  */

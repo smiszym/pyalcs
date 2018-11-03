@@ -17,6 +17,8 @@
 
 using namespace std;
 
+Environment *Action::env = 0;
+
 ostream &operator<<(ostream &out, Action *a) {
     char *action = a->env->getActionString(a);
     out << action;
