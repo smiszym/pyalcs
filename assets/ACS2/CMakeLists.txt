@@ -8,8 +8,6 @@ set(SOURCE_FILES
         ACSConstants.h
         Action.cc
         Action.h
-        BWEnvironment.cc
-        BWEnvironment.h
         CharCharPosList.cc
         CharCharPosList.h
         CharList.cc
@@ -26,14 +24,8 @@ set(SOURCE_FILES
         Effect.h
         Environment.cc
         Environment.h
-        GripperEnvironment.cc
-        GripperEnvironment.h
-        HandEyeEnvironment.cc
-        HandEyeEnvironment.h
         MazeEnvironment.cc
         MazeEnvironment.h
-        MPEnvironment.cc
-        MPEnvironment.h
         Perception.cc
         Perception.h
         PMark.cc

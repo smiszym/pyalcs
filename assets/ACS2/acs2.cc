@@ -23,7 +23,6 @@
 #include "Classifier.h"
 #include "ClassifierList.h"
 #include "MazeEnvironment.h"
-#include "MPEnvironment.h"
 
 using namespace std;
 
