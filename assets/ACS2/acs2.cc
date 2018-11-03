@@ -110,16 +110,7 @@ void startExperiments(Environment *env) {
  * Controls the execution of one experiment.
  */
 void startOneExperiment(Environment *env, ofstream *out) {
-    int time = 0, trial, exploitSteps[REWARD_TEST_ITERATION];
-
-    for (trial = 0; trial < REWARD_TEST_ITERATION; trial++) {
-        char *id = env->getID();
-        if (strcmp(id, "MP") == 0)
-            exploitSteps[trial] = 0;
-        else
-            exploitSteps[trial] = REWARD_TEST_ITERATION;
-        delete[] id;
-    }
+    int time = 0, trial;
 
     ClassifierList *population = new ClassifierList(env);
     cout << population;
@@ -127,14 +118,8 @@ void startOneExperiment(Environment *env, ofstream *out) {
     knowledge = 0;
     trial = 0;
 
-    while ((REWARD_TEST || time <= MAX_STEPS) && (!REWARD_TEST || trial <= MAX_STEPS)) {
+    while (time <= MAX_STEPS) {
         time += startOneTrialExplore(population, env, time, out);
-        if (REWARD_TEST) {
-            exploitSteps[trial % REWARD_TEST_ITERATION] = startOneTrialExploit(population, env);
-            if (trial % REWARD_TEST_ITERATION == 0) {
-                writeRewardPerformance(population, exploitSteps, time, trial, out);
-            }
-        }
         trial++;
     }
     printTestSortedClassifierList(population, env, out);
