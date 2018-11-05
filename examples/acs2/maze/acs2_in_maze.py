@@ -5,7 +5,7 @@ import gym
 # noinspection PyUnresolvedReferences
 import gym_maze
 
-from examples.acs2.maze.utils import calculate_performance
+from examples.acs2.maze.utils import *
 from lcs.agents.acs2 import ACS2, Configuration
 
 # Configure logger
@@ -49,3 +49,5 @@ if __name__ == '__main__':
 
     for metric in exploit_metric:
         logger.info(metric)
+
+    print_detailed_knowledge(maze, population)
