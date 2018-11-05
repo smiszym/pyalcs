@@ -220,6 +220,7 @@ class Classifier(object):
             Requires the effect attribute to be a wildcard to specialize it.
             By default false
         """
+        # (this is Effect::getAndSpecialize in C++ sources)
         for idx in range(len(situation)):
             if leave_specialized:
                 if self.effect[idx] != self.cfg.classifier_wildcard:
