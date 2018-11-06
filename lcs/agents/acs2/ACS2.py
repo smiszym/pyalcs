@@ -209,6 +209,7 @@ class ACS2(Agent):
         action_set = ClassifiersList()
         done = False
         sum_rating = 0
+        episode = []
 
         while not done:
             logger.info("Step {} of exploiting the environment:".format(steps))
@@ -241,6 +242,7 @@ class ACS2(Agent):
 
             action_set = match_set.form_action_set(action)
 
+            episode.append(internal_action)
             raw_state, reward, done, _ = env.step(internal_action)
             state = self.cfg.environment_adapter.to_genotype(raw_state)
 
@@ -251,6 +253,7 @@ class ACS2(Agent):
             total_reward += reward
             steps += 1
 
+        logger.info("This episode: {}".format("".join(str(x) for x in episode)))
         logger.info("Average action rating in this trial: {} in {} steps".format(sum_rating / steps, steps))
 
         return steps, total_reward
