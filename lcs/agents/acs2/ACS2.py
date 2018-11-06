@@ -213,8 +213,11 @@ class ACS2(Agent):
 
         while not done:
             logger.info("Step {} of exploiting the environment:".format(steps))
+            logger.info(
+                " * current environment:\n{}".format(env.render('ansi')))
 
             match_set = self.population.form_match_set(state)
+            logger.info(" * match set:\n{}".format(match_set))
 
             if steps > 0:
                 ClassifiersList.apply_reinforcement_learning(
@@ -230,7 +233,6 @@ class ACS2(Agent):
                 self.cfg.number_of_possible_actions,
                 epsilon=0.0)
             internal_action = self.cfg.environment_adapter.to_env_action(action)
-            logger.info(" * current environment:\n{}".format(env.render('ansi')))
             logger.info(" * decision: executing action {}".format(action))
 
             rating = None
@@ -241,6 +243,7 @@ class ACS2(Agent):
                     logger.info(" * action rating: {}".format(rating))
 
             action_set = match_set.form_action_set(action)
+            logger.info(" * action set:\n{}".format(action_set))
 
             episode.append(internal_action)
             raw_state, reward, done, _ = env.step(internal_action)
