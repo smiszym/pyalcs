@@ -208,6 +208,7 @@ class ACS2(Agent):
         total_reward = 0
         action_set = ClassifiersList()
         done = False
+        sum_rating = 0
 
         while not done:
             logger.info("Step {} of exploiting the environment:".format(steps))
@@ -230,6 +231,14 @@ class ACS2(Agent):
             internal_action = self.cfg.environment_adapter.to_env_action(action)
             logger.info(" * current environment:\n{}".format(env.render('ansi')))
             logger.info(" * decision: executing action {}".format(action))
+
+            rating = None
+            if 'rate_action' in env.env.__dir__():
+                rating = env.env.rate_action(internal_action)
+                if rating is not None:
+                    sum_rating += rating
+                    logger.info(" * action rating: {}".format(rating))
+
             action_set = match_set.form_action_set(action)
 
             raw_state, reward, done, _ = env.step(internal_action)
@@ -241,6 +250,8 @@ class ACS2(Agent):
 
             total_reward += reward
             steps += 1
+
+        logger.info("Average action rating in this trial: {} in {} steps".format(sum_rating / steps, steps))
 
         return steps, total_reward
 
