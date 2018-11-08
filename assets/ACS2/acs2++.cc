@@ -141,6 +141,9 @@ void startOneExperiment(Environment *env, ofstream *out) {
     printTestSortedClassifierList(population, env, out);
     *out<<population<<endl;
 
+    for (trial = 0; trial < 10; ++trial)
+        startOneTrialExploit(population, env);
+
     population->deleteClassifiers();
     delete population;
 }
