@@ -228,6 +228,12 @@ int startOneTrialExploit(ClassifierList *population, Environment *env) {
 
         matchSet = new ClassifierList(population, situation);
 
+        cout << "Exploitation step " << steps << "\n";
+        cout << "Environment:\n";
+        cout << (MazeEnvironment*)env;
+        cout << "Match set:\n";
+        cout << matchSet;
+
         if (steps > 0) {
             //Reinforcement learning also during exploitation
             actionSet->applyReinforcementLearning(rho0, matchSet->getMaximumQR());
