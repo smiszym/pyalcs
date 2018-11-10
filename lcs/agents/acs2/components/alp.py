@@ -58,6 +58,10 @@ def expected_case(cl: Classifier,
     :param time:
     :return: new classifier or None
     """
+
+    if cl.cfg.do_pee:
+        cl.effect.update_enhanced_effect_probs(p0, cl.cfg.beta)
+
     diff = cl.mark.get_differences(p0)
 
     if diff.specificity == 0:
