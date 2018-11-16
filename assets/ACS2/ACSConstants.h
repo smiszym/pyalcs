@@ -56,7 +56,8 @@
 #define ENVIRONMENT_CLASS MazeEnvironment
 #define RESULT_FILE "maze-results.txt"
 
-#define MAX_STEPS 30000
+#define EXPLORE_TRIALS 350
+#define EXPLOIT_TRIALS 20
 #define MAX_TRIAL_STEPS 50
 #define ANZ_EXPERIMENTS 20
 

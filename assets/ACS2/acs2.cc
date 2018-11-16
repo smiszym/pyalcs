@@ -89,7 +89,7 @@ void startExperiments(Environment *env) {
     *out << "# do_ga: " << DO_GA << " theta_ga: " << THETA_GA << " mu: " << MU << " X.type: " << X_TYPE << " chi: "
          << CHI << " theta_as: " << THETA_AS << " theta_exp: " << THETA_EXP << " do_subsumption: " << DO_SUBSUMPTION
          << endl;
-    *out << "# max_steps: " << MAX_STEPS << " max_trial_steps: " << MAX_TRIAL_STEPS << " anz_experiments: "
+    *out << "# explore trials: " << EXPLORE_TRIALS << " exploit trials: " << EXPLOIT_TRIALS << " max_trial_steps: " << MAX_TRIAL_STEPS << " anz_experiments: "
          << ANZ_EXPERIMENTS << " reward_test: " << REWARD_TEST << " model_test_iteration: " << MODEL_TEST_ITERATION
          << " reward_test_iteration: " << REWARD_TEST_ITERATION << endl;
 
@@ -109,22 +109,20 @@ void startExperiments(Environment *env) {
  * Controls the execution of one experiment.
  */
 void startOneExperiment(Environment *env, ofstream *out) {
-    int time = 0, trial;
+    int time = 0;
+    int trial;
 
     ClassifierList *population = new ClassifierList(env);
     cout << population;
 
     knowledge = 0;
-    trial = 0;
 
-    while (time <= MAX_STEPS) {
+    for (trial = 0; trial < EXPLORE_TRIALS; ++trial)
         time += startOneTrialExplore(population, env, time, out);
-        trial++;
-    }
     printTestSortedClassifierList(population, env, out);
     *out<<population<<endl;
 
-    for (trial = 0; trial < 10; ++trial)
+    for (trial = 0; trial < EXPLOIT_TRIALS; ++trial)
         startOneTrialExploit(population, env);
 
     population->deleteClassifiers();
@@ -150,7 +148,7 @@ int startOneTrialExplore(ClassifierList *population, Environment *env, int time,
 //    for (steps = 0; !env->isReset() && (REWARD_TEST || time + steps <= MAX_STEPS) &&
 //                    (REWARD_TEST || steps < MAX_TRIAL_STEPS); steps++) {
 
-    for (steps = 0; !env->isReset() && (time + steps <= MAX_STEPS) && (steps < MAX_TRIAL_STEPS); steps++) {
+    for (steps = 0; !env->isReset() && (steps < MAX_TRIAL_STEPS); steps++) {
 
         if (!REWARD_TEST && (time + steps) % MODEL_TEST_ITERATION == 0) {
             testModel(population, out, env, time + steps);
