@@ -515,7 +515,8 @@ int Classifier::isMoreGeneral(Classifier *cl) {
 ostream &operator<<(ostream &out, Classifier *cl) {
     out << cl->C << " " << cl->A << " " << cl->E << " ";
     out << cl->M << " q: ";
-    out << cl->q << "\tr: " << cl->r << "\ti: " << cl->i << "\texp: " << cl->exp << " tga: " << cl->tga << "\ttalp: " << cl->talp << " tav: "
+    out << cl->q << "\tr: " << cl->r << "\tf: " << cl->q * cl->r;
+    out << "\ti: " << cl->i << "\texp: " << cl->exp << " tga: " << cl->tga << "\ttalp: " << cl->talp << " tav: "
         << cl->tav << " num: " << cl->num;
     return out;
 }

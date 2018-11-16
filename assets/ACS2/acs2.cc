@@ -211,10 +211,10 @@ int startOneTrialExploit(ClassifierList *population, Environment *env) {
 
         matchSet = new ClassifierList(population, situation);
 
-        cout << "Exploitation step " << steps << "\n";
-        cout << "Environment:\n";
+        cout << "Step " << steps << " of exploiting the environment:\n";
+        cout << " * current environment:\n";
         cout << (MazeEnvironment*)env;
-        cout << "Match set:\n";
+        cout << " * match set:\n";
         cout << matchSet;
 
         if (steps > 0) {
@@ -224,7 +224,10 @@ int startOneTrialExploit(ClassifierList *population, Environment *env) {
         }
 
         matchSet->chooseBestQRAction(act);
+        cout << " * decision: executing action " << act << "\n";
         actionSet = new ClassifierList(matchSet, act);
+        cout << " * action set:\n";
+        cout << actionSet;
         delete matchSet;
 
         rho0 = env->executeAction(act);
