@@ -42,12 +42,12 @@ if __name__ == '__main__':
 
     # Exploit the environment
     agent = ACS2(cfg, population)
-    population, exploit_metric = agent.exploit(maze, args.exploit_trials)
+    population, exploit_metrics = agent.exploit(maze, args.exploit_trials)
 
     for metric in explore_metrics:
         logger.info(metric)
 
-    for metric in exploit_metric:
+    for metric in exploit_metrics:
         logger.info(metric)
 
     print_detailed_knowledge(maze, population)
