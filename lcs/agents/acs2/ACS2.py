@@ -85,11 +85,13 @@ class ACS2(Agent):
             logger.info("** Running trial {}/{} using strategy `{}` **"
                         .format(current_trial, max_trials, func))
 
-            steps_in_trial, reward = func(env, steps, current_trial)
+            steps_in_trial, reward, corr_pcnt = func(env, steps, current_trial)
             steps += steps_in_trial
 
             trial_metrics = self._collect_metrics(
                 env, current_trial, steps_in_trial, steps, reward)
+            trial_metrics['agent']['correct_anticipations'] = corr_pcnt
+
             metrics.append(trial_metrics)
 
             if current_trial % 25 == 0:
@@ -110,13 +112,15 @@ class ACS2(Agent):
         prev_state = None
         action_set = ClassifiersList()
         done = False
+        correct_anticipations = 0
+        all_anticipations = 0
 
         while not done:
             match_set = self.population.form_match_set(state)
 
             if steps > 0:
                 # Apply learning in the last action set
-                ClassifiersList.apply_alp(
+                d_correct, d_all = ClassifiersList.apply_alp(
                     self.population,
                     match_set,
                     action_set,
@@ -126,6 +130,8 @@ class ACS2(Agent):
                     time + steps,
                     self.cfg.theta_exp,
                     self.cfg)
+                correct_anticipations += d_correct
+                all_anticipations += d_all
                 ClassifiersList.apply_reinforcement_learning(
                     action_set,
                     reward,
@@ -163,7 +169,7 @@ class ACS2(Agent):
             state = Perception(self.cfg.environment_adapter.to_genotype(raw_state))
 
             if done:
-                ClassifiersList.apply_alp(
+                d_correct, d_all = ClassifiersList.apply_alp(
                     self.population,
                     None,
                     action_set,
@@ -173,6 +179,8 @@ class ACS2(Agent):
                     time + steps,
                     self.cfg.theta_exp,
                     self.cfg)
+                correct_anticipations += d_correct
+                all_anticipations += d_all
                 ClassifiersList.apply_reinforcement_learning(
                     action_set,
                     reward,
@@ -196,7 +204,7 @@ class ACS2(Agent):
             total_reward += reward
             steps += 1
 
-        return steps, total_reward
+        return steps, total_reward, 100.0 * correct_anticipations / all_anticipations if all_anticipations > 0 else 50.0
 
     def _run_trial_exploit(self, env, time=None, current_trial=None):
         # Initial conditions
@@ -259,7 +267,7 @@ class ACS2(Agent):
         logger.info("This episode: {}".format("".join(str(x) for x in episode)))
         logger.info("Average action rating in this trial: {} in {} steps".format(sum_rating / steps, steps))
 
-        return steps, total_reward
+        return steps, total_reward, -1.0
 
     def _collect_agent_metrics(self, trial, steps, total_steps, reward) -> Metric:
         return {

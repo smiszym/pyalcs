@@ -100,7 +100,7 @@ class ClassifiersList(TypedList):
                   p1: Perception,
                   time: int,
                   theta_exp: int,
-                  cfg: Configuration) -> None:
+                  cfg: Configuration):
         """
         The Anticipatory Learning Process. Handles all updates by the ALP,
         insertion of new classifiers in pop and possibly matchSet, and
@@ -126,12 +126,16 @@ class ClassifiersList(TypedList):
         new_cl: Optional[Classifier] = None
         was_expected_case = False
         delete_count = 0
+        correct_anticipations = 0
+        all_anticipations = 0
 
         for cl in action_set:
             cl.increase_experience()
             cl.set_alp_timestamp(time)
 
+            all_anticipations += 1
             if cl.does_anticipate_correctly(p0, p1):
+                correct_anticipations += 1
                 new_cl = alp_acs2.expected_case(cl, p0, time)
                 was_expected_case = True
             else:
@@ -170,6 +174,8 @@ class ClassifiersList(TypedList):
             new_matching = [cl for cl in new_list if
                             cl.condition.does_match(p1)]
             match_set.extend(new_matching)
+
+        return correct_anticipations, all_anticipations
 
     @staticmethod
     def apply_reinforcement_learning(action_set: "ClassifiersList",
