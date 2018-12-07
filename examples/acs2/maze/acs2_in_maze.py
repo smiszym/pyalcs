@@ -148,6 +148,7 @@ def parse_metrics_to_df(metrics):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-e", "--environment", default="MazeF4-v0")
+    parser.add_argument("--beta", default=0.05, type=float)
     parser.add_argument("--epsilon", default=0.5, type=float)
     parser.add_argument("--ga", action="store_true")
     parser.add_argument("--pee", action="store_true")
@@ -168,6 +169,7 @@ if __name__ == '__main__':
 
         # Configure and create the agent
         cfg = Configuration(8, 8,
+                            beta=args.beta,
                             epsilon=args.epsilon,
                             do_ga=args.ga,
                             do_pee=args.pee,
