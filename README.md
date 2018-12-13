@@ -1,3 +1,12 @@
+# Engineering thesis branch
+
+This is the branch for my engineering thesis. It's going to be removed once the work is fully upstreamed.
+
+Thesis title: "Extending the functionality of pyALCS library with PEE"
+
+Michał Szymański
+Wrocław, 2018
+
 # Anticipatory Learning Classifier Systems in Python
 Repository containing code implementation for various *Anticipatory Learning Classifier Systems* (ALCS).
 
